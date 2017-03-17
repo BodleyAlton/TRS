@@ -5,6 +5,10 @@ from models import Clientdb, Driver, Operator, Vehicle
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
 from Req import Client,Driver,Job
+from sqlalchemy.sql import select
+from sqlalchemy import create_engine
+
+engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
 
 def flash_errors(form):
     for field, errors in form.errors.items():
@@ -137,7 +141,7 @@ def logout():
     flash('You have been logged out.', 'danger')
     return redirect(url_for('login'))
 
-@app.route('/request',methods=['POST','GET'])
+@app.route("/request", methods=["POST","GET"])
 def request_cab():
     if request.method=="POST":
         seat = request.form['seat']
@@ -147,11 +151,16 @@ def request_cab():
         cid = current_user.id
         pickup= request.form['pickup']
         dest= request.form['dest']
-        fname= 'joice'#query using cid {Zaavi}
-        lname='mayer'#query using cid {Zaavi}
-        name= fname+" "+ lname
-        contact=1235647890 #query using cid{zaavi}
-        creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,name,contact)
+        fNResult= db.engine.execute('select cfname from client where id='+str(cid))
+        lNResult= db.engine.execute('select clname from client where id='+str(cid))
+        cResult= db.engine.execute('select ccontact from client where id='+str(cid))
+        for fname in fNResult:
+            print fname['cfname']  
+        for lname in lNResult:
+            print lname['clname']
+        for contact in cResult: 
+            print contact['ccontact']
+        creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
         print "SEAT: "+ str(creq.seat)
         print "TYPE: "+ creq.vtype
         print "FACTOR: "+creq.wfactor
@@ -159,12 +168,14 @@ def request_cab():
         print "DRIVER: "+creq.driver
         print "PICK UP: "+creq.pickup
         print "DEST:"+creq.dest
-        print "NAME: "+ str(creq.name)
+        #print "FNAME: "+ creq.fname
+        #print "LNAME: "+ creq.lname
         print "CONTACT: "+ str(creq.contact)
         print "DIST: "+ str(creq.dist())
         return "success"
         # getDriver(seat,vtype,driver)
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
+
 
 def getDriver(seat,vtype,driver):
     driverss=[]
