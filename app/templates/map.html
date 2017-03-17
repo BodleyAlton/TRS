@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js">
+    </script>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/map.css')}}"/>
+    </head>
+    <body>
+      <label id="p" for="pickup">Pick Up:</label>
+      <input id="pickup" class="controls" type="text" placeholder="Search Pickup Location">
+      <input id='psubmit' type="submit" value="search"/>
+      <label id="d"for="dest">Destination:</label>
+      <input id="dest" name="dest" class="controls" type="text" placeholder="Where to?">
+      <input id='dsubmit' type="submit" value="search"/>
+      <div id="map"></div>
+      <div id="req_form">
+        <form method='POST' action='/request'>
+          <label for="seating">No. of Persons</label>
+          <select id="seat">
+            <option value="1"> less than 4 </option>
+            <option value="2">5-7</option>
+            <option value="3">8-13</option>
+            <option value="4">greater than 13</option>
+          </select>
+          <label for='type'>Vehicle Type</label>
+          <select id="type">
+            <option value="Classic">Classic</option>
+            <option value="Regular">Regular</option>
+            <option value="Regular">Any</option>
+          </select>
+          <label for="weight">Weighting factor</label>
+          <select id="wfac">
+            <option value="time">Time</option>
+            <option value="type">Vehicle Type</option>
+          </select>
+          <label for='driverN'>Driver's Name</label>
+          <input id='driverN' type="text" placeholder="DO you have a favourite driver" />
+          <input type="submit" id="request" value="Request Cab" />
+        </form>
+      </div>
+      <script type="text/javascript" src= "{{url_for('static',filename='js/map.js')}}"></script>
+    </script>
+  <script async defer
+  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDy8tt5vdmipUlu4mdbvtoaiXgqHSC4UkI&libraries=geometry,places&region=JM&callback=createMap">
+  </script>
+</body>
+</html>

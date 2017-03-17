@@ -1,0 +1,19 @@
+<h1>Log-in</h1>
+{% with messages = get_flashed_messages()%}
+  {%if messages%}
+  <ul>
+    {%for message in messages%}
+      <li>
+        {{message}}
+      </li>
+    {%endfor%}
+  </ul>
+  {%endif%}
+{%endwith%}
+
+<form method="POST" action="{{url_for('login')}}">
+  {{ form.csrf_token}}
+  <div>{{form.username.label}} {{form.username(size=15)}}</div>
+  <div>{{form.password.label}} {{form.password(size=15)}}</div>
+  <input type=submit value=login />
+</form>
