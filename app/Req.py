@@ -1,7 +1,7 @@
 import math
 
 class Client():
-    def __init__(self,seat,vtype,wfactor,cid,driver,pickup,dest,name,contact):
+    def __init__(self,seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact):
         self.seat=seat
         self.vtype=vtype
         self.wfactor=wfactor
@@ -9,7 +9,8 @@ class Client():
         self.driver=driver
         self.pickup=pickup
         self.dest=dest
-        self.name=name
+        self.fname=fname
+        self.lname=lname
         self.contact=contact
 
     def dist(self):
