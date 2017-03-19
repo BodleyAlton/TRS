@@ -25,6 +25,7 @@ def home():
     return render_template('map.html',form=rform)
 
 @app.route('/add-client', methods=['POST','GET'])
+@login_required
 def add_client():
     cform=clientForm()
     if request.method=='POST':
@@ -110,6 +111,8 @@ def add_vehicle():
 
 @app.route('/login',methods=['POST','GET'])
 def login():
+    path=request.url_rule
+    print "Path"+path.rule
     lform=LoginForm()
     if request.method=='POST':
         if lform.validate_on_submit():
@@ -119,12 +122,11 @@ def login():
             userr = Clientdb.query.filter_by(cemail=un,cpassword = pw).first()
             print userr;
             login_user(userr)
-            return redirect(url_for ('home'))
             print "Loged In"
             next=request.args.get('next')
             # if not is_safe_url(next):
             #     return abort(400)
-            # return redirect(next or url_for('home'))
+            return redirect(next or url_for('home'))
         else:
             print 'FAIL'
     return render_template('login.html',form=lform)
@@ -155,11 +157,14 @@ def request_cab():
         lNResult= db.engine.execute('select clname from client where id='+str(cid))
         cResult= db.engine.execute('select ccontact from client where id='+str(cid))
         for fname in fNResult:
-            print fname['cfname']  
+            # print fname['cfname']
+            fname = fname['cfname']
         for lname in lNResult:
-            print lname['clname']
-        for contact in cResult: 
-            print contact['ccontact']
+            # print lname['clname']
+            lname = lname['clname']
+        for contact in cResult:
+            # print contact['ccontact']
+            contact = contact['ccontact']
         creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
         print "SEAT: "+ str(creq.seat)
         print "TYPE: "+ creq.vtype
@@ -168,8 +173,8 @@ def request_cab():
         print "DRIVER: "+creq.driver
         print "PICK UP: "+creq.pickup
         print "DEST:"+creq.dest
-        #print "FNAME: "+ creq.fname
-        #print "LNAME: "+ creq.lname
+        print "FNAME: "+ creq.fname
+        print "LNAME: "+ creq.lname
         print "CONTACT: "+ str(creq.contact)
         print "DIST: "+ str(creq.dist())
         return "success"

@@ -11,7 +11,7 @@
   {%endif%}
 {%endwith%}
 
-<form method="POST" action="{{url_for('login')}}">
+<form method="POST">
   {{ form.csrf_token}}
   <div>{{form.username.label}} {{form.username(size=15)}}</div>
   <div>{{form.password.label}} {{form.password(size=15)}}</div>
