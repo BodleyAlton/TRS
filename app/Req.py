@@ -39,3 +39,6 @@ class Job():
 
     def drive(self):
         return self.driver.name
+
+def getKey(drivers):
+	return drivers[1]

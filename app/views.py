@@ -4,7 +4,7 @@ from forms import clientForm, RequestForm, driverForm, operatorForm, vehicleForm
 from models import Clientdb, Driver, Operator, Vehicle
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
-from Req import Client,Driver,Job
+from Req import *
 from sqlalchemy.sql import select
 from sqlalchemy import create_engine
 
@@ -177,29 +177,37 @@ def request_cab():
         print "LNAME: "+ creq.lname
         print "CONTACT: "+ str(creq.contact)
         print "DIST: "+ str(creq.dist())
+        getDrivers(seat,vtype,driver)
         return "success"
-        # getDriver(seat,vtype,driver)
+
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
 
-def getDriver(seat,vtype,driver):
-    driverss=[]
+def getDrivers(seat,vtype,driver):
+    drivers=[]
     i=0
     j=0
     if driver != '':
         print driver #driver= Put query here using driver(return name,platereg,make,model and color of vchl){Zaavan}
     #drivers=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
-    for driver in drivers:
-            driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
-    while (i < len(driverss)):
-        name=driverss[i][0]
-        regnum=driverss[i][1]
-        model=driverss[i][2]
-        make=make[i][3]
-        color=driverss[i][4]
-        loc=driverss[i][5]
-    pdriver=Driver(name,regnum,make,model,color,loc)
-    return pdriver.dest() #Consider passing to another function where the priority list will be populated.
+    drivers=[[123,6],[456,10],[789,7.5],[012,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2]] #List produced by database query
+    # for driver in drivers:
+    #         driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
+    # while (i < len(driverss)):
+    #     name=driverss[i][0]
+    #     regnum=driverss[i][1]
+    #     model=driverss[i][2]
+    #     make=make[i][3]
+    #     color=driverss[i][4]
+    #     loc=driverss[i][5]
+    # pdriver=Driver(name,regnum,make,model,color,loc)
+    # return pdriver.dest() #Consider passing to another function where the priority list will be populated.
+    print "DRIVER SEAT: "+str(seat)
+    print "DRIVER VTYPE: "+ vtype
+    print drivers
+    sdrivers=sorted(drivers,key=getKey)
+    print "Sorted"
+    print sdrivers
 
 
 @app.route('/save-coord', methods=['GET', 'POST'])
