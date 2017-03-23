@@ -180,12 +180,13 @@ def request_cab():
 
 def getDrivers(seat,vtype,driver,cdist):
     drivers=[]
+    pdrivers=[]
     i=0
     j=0
     if driver != '':
         print driver #driver= Put query here using driver(return name,platereg,make,model and color of vchl){Zaavan}
     #drivers=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
-    drivers=[[123,6],[456,10],[789,7.5],[012,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
+    drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
     # for driver in drivers:
     #         driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
     # while (i < len(driverss)):
@@ -207,7 +208,17 @@ def getDrivers(seat,vtype,driver,cdist):
     cpos=5
     print "CPOS"
     print cpos
+    j=cpos
+    x=cpos+1
+    while j > (cpos-5) and j != 0:
+        pdrivers.append(sdrivers[j])
+        j-=1
 
+    while x < (cpos+6) and x != len(sdrivers):
+        pdrivers.append(sdrivers[x])
+        x+=1
+    print "PDRIVERS"
+    print pdrivers
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():
     pickup=request.form['pickUpLoc']
