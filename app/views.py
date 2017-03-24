@@ -9,7 +9,8 @@ from sqlalchemy.sql import select
 from sqlalchemy import create_engine
 
 engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
-
+pickup=''
+dest=''
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
@@ -149,7 +150,9 @@ def request_cab():
         wfactor= request.form['wfac']
         driver= request.form['dname']
         cid = current_user.id
+        global pickup
         pickup= request.form['pickup']
+        global dest
         dest= request.form['dest']
         fNResult= db.engine.execute('select cfname from client where id='+str(cid))
         lNResult= db.engine.execute('select clname from client where id='+str(cid))
@@ -160,6 +163,7 @@ def request_cab():
             lname = lname['clname']
         for contact in cResult:
             contact = contact['ccontact']
+        global creq
         creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
         print "SEAT: "+ str(creq.seat)
         print "TYPE: "+ creq.vtype
@@ -219,6 +223,16 @@ def getDrivers(seat,vtype,driver,cdist):
         x+=1
     print "PDRIVERS"
     print pdrivers
+    getEta(pdrivers)
+
+def getEta(drivers):
+    print "here"
+    print pickup
+    drv=drivers
+    print "ETA"
+    print drv
+    return render_template('eta.html',drivers=drv)
+
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():
     pickup=request.form['pickUpLoc']
