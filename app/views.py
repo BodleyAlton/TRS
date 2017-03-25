@@ -1,6 +1,7 @@
 from app import app,db,login_manager
 from flask import render_template, request, redirect, url_for, jsonify,flash
 from forms import clientForm, RequestForm, driverForm, operatorForm, vehicleForm,LoginForm
+from flask_sse import sse
 from models import Clientdb, Driver, Operator, Vehicle
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
@@ -189,27 +190,12 @@ def getDrivers(seat,vtype,driver,cdist):
     j=0
     if driver != '':
         print driver #driver= Put query here using driver(return name,platereg,make,model and color of vchl){Zaavan}
-    #drivers=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
+    #drivers=  #query ID and pos
     drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
-    # for driver in drivers:
-    #         driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
-    # while (i < len(driverss)):
-    #     name=driverss[i][0]
-    #     regnum=driverss[i][1]
-    #     model=driverss[i][2]
-    #     make=make[i][3]
-    #     color=driverss[i][4]
-    #     loc=driverss[i][5]
-    # pdriver=Driver(name,regnum,make,model,color,loc)
-    # return pdriver.dest() #Consider passing to another function where the priority list will be populated.
-    print "DRIVER SEAT: "+str(seat)
-    print "DRIVER VTYPE: "+ vtype
-    print drivers
     sdrivers=sorted(drivers,key=getKey)
-    print "Sorted"
     print sdrivers
     #cpos=binary_search(sdrivers, cdist, 0, len(sdrivers)-1)
-    cpos=5
+    cpos=5 #stub
     print "CPOS"
     print cpos
     j=cpos
@@ -223,15 +209,47 @@ def getDrivers(seat,vtype,driver,cdist):
         x+=1
     print "PDRIVERS"
     print pdrivers
-    getEta(pdrivers)
+    #query for the location of each driver[i][0]
+    loc=[ [18.024583,-76.761250],[18.030585,-76.765521],[18.030801,-76.773276],[18.031141,-76.761521],[18.019688,-76.765046],[18.026336,-76.757449],[18.026572,-76.771523],[18.020625,-76.774054],[18.017870,-76.757470],[18.030816,-76.765507] ]
+    i=0
+    while (i < len(pdrivers)):
+        pdrivers[i].append(loc[i])
+        i+=1
+    print "loc"
+    print pdrivers
+    return getEta(pdrivers)#url_for('getEta')
 
-def getEta(drivers):
+@app.route('/getEta')
+def getEta(pdrivers):
+    i=0
+    ALst=[]
+    selected="no"
     print "here"
     print pickup
-    drv=drivers
+    # drv=pdrivers
     print "ETA"
-    print drv
-    return render_template('eta.html',drivers=drv)
+    print pdrivers
+    # sse.publish({"drivers": drv},type='text')
+    print "publish"
+    #query ETA
+    eta=[9,8,7,6,5,4,3,2,1,0]
+    while (i < len(pdrivers)):
+        pdrivers[i].append(eta[i])
+        i+=1
+    print "Got ETA"
+    print pdrivers
+    #pdrivers=[ID,pos,[lat,lng],eta]
+    # sort by ETA
+    ppdrivers=sorted(pdrivers,key=getEKey)
+    print "Sorted ETA"
+    print ppdrivers
+
+    #Should we go through the process of assigning a driver
+    # in javascript or do it here?
+    # *Notifications will have to be sent to each driver.
+    # *Could send tuple that accepted request back to create job obj.
+
+    return "Message sent"
 
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():

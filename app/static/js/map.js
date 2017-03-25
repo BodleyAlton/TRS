@@ -205,3 +205,8 @@ function request(pickUpLoc,destLoc){
    });
   });
 }
+var source = new EventSource("{{ url_for('sse.stream')}}");
+source.addEventListener('text',function(e){
+  var data = JSON.parse(e.data);
+  console.log("data: "+data);
+}, false);

@@ -42,7 +42,8 @@ class Job():
 
 def getKey(drivers):
 	return drivers[1]
-
+def getEKey(drivers):
+	return drivers[3]
 def binary_search(A, value, start, end):
     if start == end:
         if A[start][1] > value:
