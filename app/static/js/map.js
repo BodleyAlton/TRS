@@ -201,12 +201,9 @@ function request(pickUpLoc,destLoc){
       },
      method: 'POST'
    }).done(function(status){
-     console.log("RESPONSE: "+status);
+     drivers=JSON.parse(status);
+     console.log(drivers);
+     pdrivers(drivers,pickUpLoc);
    });
   });
 }
-var source = new EventSource("{{ url_for('sse.stream')}}");
-source.addEventListener('text',function(e){
-  var data = JSON.parse(e.data);
-  console.log("data: "+data);
-}, false);

@@ -121,6 +121,8 @@ def login():
             userr = Clientdb.query.filter_by(cemail=un,cpassword = pw).first()
             print userr;
             login_user(userr)
+            # if current_user.id[0]=="D":
+                #push id to javascript
             return redirect(url_for ('home'))
             print "Loged In"
             next=request.args.get('next')
@@ -178,8 +180,9 @@ def request_cab():
         print "CONTACT: "+ str(creq.contact)
         print "DIST: "+ str(creq.dist())
         cdist=creq.dist()
-        getDrivers(seat,vtype,driver,cdist)
-        return "success"
+        alist=getDrivers(seat,vtype,driver,cdist)
+        print "REQUEST ROUTE"
+        return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
 
@@ -217,40 +220,9 @@ def getDrivers(seat,vtype,driver,cdist):
         i+=1
     print "loc"
     print pdrivers
-    return getEta(pdrivers)#url_for('getEta')
-
-@app.route('/getEta')
-def getEta(pdrivers):
-    i=0
-    ALst=[]
-    selected="no"
-    print "here"
-    print pickup
-    # drv=pdrivers
-    print "ETA"
-    print pdrivers
-    # sse.publish({"drivers": drv},type='text')
-    print "publish"
-    #query ETA
-    eta=[9,8,7,6,5,4,3,2,1,0]
-    while (i < len(pdrivers)):
-        pdrivers[i].append(eta[i])
-        i+=1
-    print "Got ETA"
-    print pdrivers
-    #pdrivers=[ID,pos,[lat,lng],eta]
-    # sort by ETA
-    ppdrivers=sorted(pdrivers,key=getEKey)
-    print "Sorted ETA"
-    print ppdrivers
-
-    #Should we go through the process of assigning a driver
-    # in javascript or do it here?
-    # *Notifications will have to be sent to each driver.
-    # *Could send tuple that accepted request back to create job obj.
-
-    return "Message sent"
-
+    print "GET DRIVERS"
+    return str(pdrivers)
+    
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():
     pickup=request.form['pickUpLoc']
