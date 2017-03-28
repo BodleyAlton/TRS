@@ -28,11 +28,8 @@ function dist(driver,pickup,drivers,y){
         duration = element.duration.value;
         var from = origins[i];
         var to = destinations[j];
-        console.log("REQUESTD: "+duration);
         drivers[y].push(duration);
-        console.log("WITH DUR")
-        console.log(drivers[y])
-        mergeSort(drivers);
+        insertionSort(drivers);
         console.log("Drivers sorted")
         console.log(drivers)
         return duration;
@@ -40,10 +37,6 @@ function dist(driver,pickup,drivers,y){
     }
   }
   });
-  console.log("Drivers after")
-  console.log(drivers)
-
-
 }
 function mergeSort(arr){
  var len = arr.length;
@@ -72,4 +65,21 @@ function merge(left, right){
   }
   //remaining part needs to be addred to the result
   return result.concat(left.slice(l)).concat(right.slice(r));
+}
+
+function insertionSort(arr){
+  var i, len = arr.length, el, j;
+  for(i = 1; i<len; i++){
+    el = arr[i];
+    j = i;
+    while(j>0 && arr[j-1][3] > arr[j][3]){
+      //console.log("to insert: "+toInsert)
+      arr[j] = arr[j-1];
+      j--;
+   }
+
+   arr[j] = el;
+  }
+
+  return arr;
 }
