@@ -202,7 +202,9 @@ function request(pickUpLoc,destLoc){
      method: 'POST'
    }).done(function(status){
      drivers=JSON.parse(status);
+     console.log("b4");
      console.log(drivers);
+     console.log("after")
      pdrivers(drivers,pickUpLoc);
    });
   });
