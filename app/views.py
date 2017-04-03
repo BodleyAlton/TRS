@@ -10,35 +10,35 @@ from sqlalchemy import create_engine
 
 engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
 
-def getIdValue(cid):
+def getCIdValue(cid):
     newId=''
     newId= cid.split('c')
     newID=int(newId[1])+ 1
     return(newID)
 
-def uniqueID(cid):
+def uniqueCID(cid):
     return('c' + str(cid))
 
 
 
-def getIdValue(did):
+def getDIdValue(did):
     newId=''
-    newId= cid.split('d')
+    newId= did.split('d')
     newID=int(newId[1])+ 1
     return(newID)
 
-def uniqueID(did):
+def uniqueDID(did):
     return('d' + str(did))
 
 
 
-def getIdValue(oid):
+def getOIdValue(oid):
     newId=''
-    newId= cid.split('o')
+    newId= oid.split('o')
     newID=int(newId[1])+ 1
     return(newID)
 
-def uniqueID(oid):
+def uniqueOID(oid):
     return('o' + str(oid))
 
 def flash_errors(form):
@@ -63,8 +63,8 @@ def add_client():
             prevID=db.engine.execute('select cValue from idValue')
             for pID in prevID:
                 oldID= pID['cValue']
-            specialID=uniqueID(oldID)
-            specIdValue=getIdValue(specialID)
+            specialID=uniqueCID(oldID)
+            specIdValue=getCIdValue(specialID)
             cfname=cform.cfname.data
             clname=cform.clname.data
             ccontact=cform.ccontact.data
@@ -103,8 +103,8 @@ def add_driver():
             prevDID=db.engine.execute('select dValue from idValue')
             for pDID in prevDID:
                 oldDID= pDID['dValue']
-            specialDID=uniqueID(oldDID)
-            specDIdValue=getIdValue(specialDID)
+            specialDID=uniqueDID(oldDID)
+            specDIdValue=getDIdValue(specialDID)
             driver= Driver(specialDID,dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
             db.session.add(driver)
             db.session.commit()
@@ -130,8 +130,8 @@ def add_operator():
             prevOID=db.engine.execute('select oValue from idValue')
             for pOID in prevOID:
                 oldOID= pOID['oValue']
-            specialOID=uniqueID(oldOID)
-            specOIdValue=getIdValue(specialOID)
+            specialOID=uniqueOID(oldOID)
+            specOIdValue=getOIdValue(specialOID)
             operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             db.session.add(operator)
             db.session.commit()
