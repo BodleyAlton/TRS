@@ -3,7 +3,7 @@ from flask.ext.login import UserMixin
 
 class Clientdb(db.Model, UserMixin):
 	__tablename__ = 'client'
-	id= db.Column('id', db.Integer, autoincrement=True, primary_key=True)
+	userCID= db.Column('userCID', db.Unicode, primary_key=True)
 	cfname= db.Column('cfname', db.Unicode)
 	clname= db.Column('clname', db.Unicode)
 	ccontact= db.Column('ccontact', db.Integer)
@@ -13,8 +13,10 @@ class Clientdb(db.Model, UserMixin):
 	cadd2=db.Column('cadd2',db.Unicode)
 	ccity= db.Column('city', db.Unicode)
 	cparish= db.Column('parish', db.Unicode)
-
-	def __init__(self,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish):
+    
+	
+	def __init__(self,userCID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish):
+		self.userCID= userCID
 		self.cfname= cfname
 		self.clname= clname
 		self.ccontact= ccontact
@@ -41,7 +43,8 @@ class Clientdb(db.Model, UserMixin):
 
 class Driver(db.Model):
 	__tablename__ = 'driver'
-	dtrn= db.Column('dtrn', db.Integer, primary_key= True)
+	dID= db.Column('dID',db.Unicode, primary_key= True)
+	dtrn= db.Column('dtrn', db.Integer, unique= True)
 	dfname= db.Column('dfname', db.Unicode)
 	dlname= db.Column('dlname', db.Unicode)
 	dcontact= db.Column('dcontact',db.Integer)
@@ -51,6 +54,21 @@ class Driver(db.Model):
 	daddr2= db.Column('daddr2', db.Unicode)
 	dcity= db.Column('dcity', db.Unicode)
 	dparish= db.Column('dparish', db.Unicode)
+
+	def getIdValue(did):
+    		newId=''
+    		newId= cid.split('d')
+    		newID=int(newId[1])
+    		return(newID)
+
+	def uniqueDID(did):
+    		newId=''
+    		newId= did.split('d')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('d' + str(uID))
+
+
 
 	def __init__(self,dtrn,dfname,dlname,dcontact,demail,dpassword,daddr1,daddr2,dcity,dparish):
 		self.dtrn= dtrn
@@ -67,7 +85,7 @@ class Driver(db.Model):
 
 class Operator(db.Model):
 	__tablename__ = 'operator'
-	opID= db.Column('opID', db.Integer, primary_key=True)
+	opID= db.Column('opID', db.Unicode, primary_key=True)
 	ofname= db.Column('ofname', db.Unicode)
 	olname= db.Column('olname', db.Unicode)
 	oadd1=db.Column('oadd1',db.Unicode)
@@ -75,6 +93,20 @@ class Operator(db.Model):
 	ocity= db.Column('ocity', db.Unicode)
 	oparish= db.Column('oparish', db.Unicode)
 	otrn= db.Column('otrn', db.Integer)
+
+	def getIdValue(oid):
+    		newId=''
+    		newId= cid.split('o')
+    		newID=int(newId[1])
+    		return(newID)
+
+	def uniqueID(oid):
+    		newId=''
+    		newId= oid.split('o')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('o' + str(uID))
+
 
 	def __init__(self,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
 		self.ofname= ofname
@@ -106,7 +138,7 @@ class Vehicle(db.Model):
 class View(db.Model):		#Report that the operator would see from viewing the driver
  	__tablename__= 'views'
  	dtrn= db.Column('dtrn',db.Integer, primary_key=True)
-	id=db.Column('id',db.Integer, primary_key=True)
+	cid=db.Column('cid',db.Unicode, primary_key=True)
 	plateNum=db.Column('plate',db.Integer,primary_key=True)
 	opID=db.Column('opID',db.Integer,primary_key=True)
 	job_date= db.Column('date',db.Date)
@@ -141,3 +173,36 @@ class Operates(db.Model):
  	def __init__(self,dtrn,platenum):
 		self.dtrn= dtrn
 		self.platenum=platenum
+
+class Users(db.Model):
+ 	__tablename__= 'users'
+ 	userID= db.Column('userID',db.Unicode, primary_key=True)
+ 	email= db.Column('email',db.Unicode)
+ 	password= db.Column('password',db.Unicode) 
+ 	utype= db.Column('utype',db.Unicode)	
+
+ 	def __init__(self,userID,email,password,utype):
+		self.userID= userID
+		self.email= email
+		self.password= password
+		self.utype= utype
+
+class Driver_Location(db.Model):
+ 	__tablename__= 'driver_location'
+ 	dID= db.Column('dID',db.Unicode, primary_key=True)
+ 	lat= db.Column('lat',db.Float)
+ 	longi= db.Column('longi',db.Float) 
+ 	pos= db.Column('pos',db.Float)	
+
+ 	def __init__(self,userID,email,password,utype):
+		self.dID= dID
+		self.lat= lat
+		self.longi= longi
+		self.pos= pos
+
+class IdValue(db.Model):
+ 	__tablename__= 'idvalue'
+ 	idV= db.Column('idV',db.Integer, primary_key=True)
+ 	cValue= db.Column('cValue',db.Integer)
+ 	dValue= db.Column('dValue',db.Integer) 
+ 	oValue= db.Column('oValue',db.Integer)	
