@@ -10,6 +10,37 @@ from sqlalchemy import create_engine
 
 engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
 
+def getIdValue(cid):
+    newId=''
+    newId= cid.split('c')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueID(cid):
+    return('c' + str(cid))
+
+
+
+def getIdValue(did):
+    newId=''
+    newId= cid.split('d')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueID(did):
+    return('d' + str(did))
+
+
+
+def getIdValue(oid):
+    newId=''
+    newId= cid.split('o')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueID(oid):
+    return('o' + str(oid))
+
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
@@ -29,6 +60,11 @@ def add_client():
     cform=clientForm()
     if request.method=='POST':
         if cform.validate_on_submit():
+            prevID=db.engine.execute('select cValue from idValue')
+            for pID in prevID:
+                oldID= pID['cValue']
+            specialID=uniqueID(oldID)
+            specIdValue=getIdValue(specialID)
             cfname=cform.cfname.data
             clname=cform.clname.data
             ccontact=cform.ccontact.data
@@ -38,9 +74,12 @@ def add_client():
             cadd2=cform.cadd2.data
             ccity=cform.ccity.data
             cparish=cform.cparish.data
-            client= Clientdb(cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
+            client= Clientdb(specialID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
             db.session.add(client)
             db.session.commit()
+            db.engine.execute('update idValue set cValue=' + str(specIdValue))
+            db.session.commit()
+
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
     flash_errors(cform)
@@ -61,8 +100,15 @@ def add_driver():
             dcity=dform.dcity.data
             dparish=dform.dparish.data
             dtrn=dform.dtrn.data
-            driver= Driver(dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
+            prevDID=db.engine.execute('select dValue from idValue')
+            for pDID in prevDID:
+                oldDID= pDID['dValue']
+            specialDID=uniqueID(oldDID)
+            specDIdValue=getIdValue(specialDID)
+            driver= Driver(specialDID,dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
             db.session.add(driver)
+            db.session.commit()
+            db.engine.execute('update idValue set dValue=' + str(specDIdValue))
             db.session.commit()
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
@@ -81,8 +127,15 @@ def add_operator():
             ocity=oform.ocity.data
             oparish=oform.oparish.data
             otrn=oform.otrn.data
-            operator= Operator(ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
+            prevOID=db.engine.execute('select oValue from idValue')
+            for pOID in prevOID:
+                oldOID= pOID['oValue']
+            specialOID=uniqueID(oldOID)
+            specOIdValue=getIdValue(specialOID)
+            operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             db.session.add(operator)
+            db.session.commit()
+            db.engine.execute('update idValue set oValue=' + str(specOIdValue))
             db.session.commit()
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
@@ -176,7 +229,6 @@ def request_cab():
         # getDriver(seat,vtype,driver)
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
-
 def getDriver(seat,vtype,driver):
     driverss=[]
     i=0
@@ -195,7 +247,16 @@ def getDriver(seat,vtype,driver):
         loc=driverss[i][5]
     pdriver=Driver(name,regnum,make,model,color,loc)
     return pdriver.dest() #Consider passing to another function where the priority list will be populated.
+    fNResult= db.engine.execute('select dfname from client where status=available')
+    lNResult= db.engine.execute('select dlname from client where status=available')
+    vResult= db.engine.execute('select plateNum from operates join driver on operates.userDID=driver.userDID where status=available')
 
+    for fname in fNResult:
+            print fname['dfname']  
+    for lname in lNResult:
+        print lname['dlname']
+    for plate in vResult:
+        print plate['plateNum']
 
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():
