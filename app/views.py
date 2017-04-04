@@ -1,8 +1,8 @@
 from app import app,db,login_manager
 from flask import render_template, request, redirect, url_for, jsonify,flash
-from forms import clientForm, RequestForm, driverForm, operatorForm, vehicleForm,LoginForm
+from forms import *
 from flask_sse import sse
-from models import Clientdb, Driver, Operator, Vehicle
+from models import *
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
 from Req import *
@@ -10,6 +10,39 @@ from sqlalchemy.sql import select
 from sqlalchemy import create_engine
 
 engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
+
+def getCIdValue(cid):
+    newId=''
+    newId= cid.split('c')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueCID(cid):
+    return('c' + str(cid))
+
+
+
+def getDIdValue(did):
+    newId=''
+    newId= did.split('d')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueDID(did):
+    return('d' + str(did))
+
+
+
+def getOIdValue(oid):
+    newId=''
+    newId= oid.split('o')
+    newID=int(newId[1])+ 1
+    return(newID)
+
+def uniqueOID(oid):
+    return('o' + str(oid))
+
+# engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
 pickup=''
 dest=''
 def flash_errors(form):
@@ -19,18 +52,26 @@ def flash_errors(form):
                 getattr(form, field).label.text,
                 error
             ))
-
 @app.route('/')
-@login_required
+#@login_required
 def home():
-    rform=RequestForm()
-    return render_template('map.html',form=rform)
+    return render_template('home.html')
+
+@app.route('/map/new_request')
+@login_required
+def new_request():    
+    return render_template('map.html')
 
 @app.route('/add-client', methods=['POST','GET'])
 def add_client():
     cform=clientForm()
     if request.method=='POST':
         if cform.validate_on_submit():
+            prevID=db.engine.execute('select cValue from idValue')
+            for pID in prevID:
+                oldID= pID['cValue']
+            specialID=uniqueCID(oldID)
+            specIdValue=getCIdValue(specialID)
             cfname=cform.cfname.data
             clname=cform.clname.data
             ccontact=cform.ccontact.data
@@ -40,8 +81,15 @@ def add_client():
             cadd2=cform.cadd2.data
             ccity=cform.ccity.data
             cparish=cform.cparish.data
-            client= Clientdb(cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
+            usertype="client"
+            cstatus="active"
+            client= Clientdb(specialID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus)
             db.session.add(client)
+            db.session.commit()
+            db.engine.execute('update idValue set cValue=' + str(specIdValue))
+            db.session.commit()
+            user=Users(specialID,cemail,cpassword,usertype)
+            db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
@@ -53,6 +101,11 @@ def add_driver():
     dform=driverForm()
     if request.method=='POST':
         if dform.validate_on_submit():
+            prevDID=db.engine.execute('select dValue from idValue')
+            for pDID in prevDID:
+                oldDID= pDID['dValue']
+            specialDID=uniqueDID(oldDID)
+            specDIdValue=getDIdValue(specialDID)
             dfname=dform.dfname.data
             dlname=dform.dlname.data
             dcontact=dform.dcontact.data
@@ -63,8 +116,14 @@ def add_driver():
             dcity=dform.dcity.data
             dparish=dform.dparish.data
             dtrn=dform.dtrn.data
-            driver= Driver(dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
+            usertype="driver"
+            driver= Driverdb(specialDID,dtrn,dfname,dlname,dcontact,demail,dadd1,dadd2,dcity,dparish)
             db.session.add(driver)
+            db.session.commit()
+            db.engine.execute('update idValue set dValue=' + str(specDIdValue))
+            db.session.commit()
+            user=Users(specialDID,demail,dpassword,usertype)
+            db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
@@ -82,9 +141,22 @@ def add_operator():
             oadd2=oform.oadd2.data
             ocity=oform.ocity.data
             oparish=oform.oparish.data
+            oemail=oform.oemail.data
+            opassword=oform.opassword.data
             otrn=oform.otrn.data
-            operator= Operator(ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
+            usertype="operator"
+            prevOID=db.engine.execute('select oValue from idValue')
+            for pOID in prevOID:
+                oldOID= pOID['oValue']
+            specialOID=uniqueOID(oldOID)
+            specOIdValue=getOIdValue(specialOID)
+            operator= Operatordb(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             db.session.add(operator)
+            db.session.commit()
+            db.engine.execute('update idValue set oValue=' + str(specOIdValue))
+            db.session.commit()
+            user=Users(specialOID,oemail,opassword,usertype)
+            db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
@@ -117,13 +189,14 @@ def login():
         if lform.validate_on_submit():
             un = lform.username.data
             pw = lform.password.data
+            print un
             print pw;
-            userr = Clientdb.query.filter_by(cemail=un,cpassword = pw).first()
+            userr = Users.query.filter_by(email=un,password = pw).first()
             print userr;
             login_user(userr)
             # if current_user.id[0]=="D":
                 #push id to javascript
-            return redirect(url_for ('home'))
+            return redirect(url_for ('new_request'))
             print "Loged In"
             next=request.args.get('next')
             # if not is_safe_url(next):
@@ -132,11 +205,13 @@ def login():
         else:
             print 'FAIL'
             #if statement to validate which template to render
+            # if current_user.id[0]=='C':
+            #     return render_template('')
     return render_template('login.html',form=lform)
 
 @login_manager.user_loader
 def load_user(id):
-    return Users.query.get(int(userID))
+    return Users.query.get(id)
 
 @app.route("/logout")
 @login_required
@@ -158,9 +233,9 @@ def request_cab():
         pickup= request.form['pickup']
         global dest
         dest= request.form['dest']
-        fNResult= db.engine.execute('select cfname from client where id='+str(cid))
-        lNResult= db.engine.execute('select clname from client where id='+str(cid))
-        cResult= db.engine.execute('select ccontact from client where id='+str(cid))
+        fNResult= db.engine.execute("select cfname from client where userCID= %s", cid)
+        lNResult= db.engine.execute('select clname from client where userCID= %s',cid)
+        cResult= db.engine.execute('select ccontact from client where userCID= %s',cid)
         for fname in fNResult:
             fname = fname['cfname']
         for lname in lNResult:
@@ -185,7 +260,6 @@ def request_cab():
         print "REQUEST ROUTE"
         return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
-
 
 def getDrivers(seat,vtype,driver,cdist):
     drivers=[]
@@ -224,8 +298,32 @@ def getDrivers(seat,vtype,driver,cdist):
     print "GET DRIVERS"
     return str(pdrivers)
 
-@app.route('/save-coord', methods=['GET', 'POST'])
-def save_coord():
-    pickup=request.form['pickUpLoc']
-    dest=request.form['destLoc']
-    print  "PICKUP: "+pickup+", "+"DEST: "+ dest
+# @app.route('/save-coord', methods=['GET', 'POST'])
+# def save_coord():
+#     pickup=request.form['pickUpLoc']
+#     dest=request.form['destLoc']
+#     print  "PICKUP: "+pickup+", "+"DEST: "+ dest
+
+@app.route('/report', methods=["GET"])
+def report():
+    # store all vehicles from database in this variable vehiclesss=
+    return render_template("report.html")
+    
+@app.route('/view_driver', methods=["GET"])
+def view_driver():
+    # store all drivers from database in this variable driversss=
+    return render_template("view_driver.html")
+    
+@app.route('/view_vehicle', methods=["GET"])
+def view_vehicles():
+    # store all vehicles from database in this variable vehiclesss=
+    return render_template("view_vehicles.html")
+    
+@app.route('/view_clients', methods=["GET"])
+def view_clients():
+    # store all clients from database in this variable clientsss=
+    return render_template("view_clients.html")
+    
+@app.route("/operator", methods=["GET"])
+def opp_main():
+    return render_template("operator_main.html")

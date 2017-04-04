@@ -1,3 +1,12 @@
+{% extends "base.html" %}
+
+{% block css%}
+
+    <link rel="stylesheet" href="/static/css/login.css"> 
+    
+{% endblock %}
+
+{% block main%}
 <h1>Log-in</h1>
 {% with messages = get_flashed_messages()%}
   {%if messages%}
@@ -11,9 +20,21 @@
   {%endif%}
 {%endwith%}
 
-<form method="POST">
-  {{ form.csrf_token}}
-  <div>{{form.username.label}} {{form.username(size=15)}}</div>
-  <div>{{form.password.label}} {{form.password(size=15)}}</div>
-  <input type=submit value=login />
-</form>
+<div class= "body">
+  <!--<div class="grad"></div>-->
+  <div class="header">
+    <div > On The Move<span><br/>Taxi</span></div>
+  </div>
+   <br>
+  <div class="login">
+    <form method="POST" action="{{url_for('login')}}">
+      {{ form.csrf_token}}
+      {{form.username.label}} {{form.username(size=15)}}<br>
+      {{form.password.label}} {{form.password(size=15)}}
+      <input type=submit value=login />
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+

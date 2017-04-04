@@ -49,19 +49,6 @@ function getCurrent() {
     map.setCenter(cpos);
     pickUp.setMap(map);
     console.log("current pos; lat:"+cpos.lat+" lng:"+cpos.lng);
-    // console.log("Pickup if set to current: "+pickUpLoc.lat+","+pickUpLoc.lng);
-    // $.ajax('/save-coord', {
-    //   data: {
-    //     x:  '12',
-    //     y: '123'
-    //   },
-    //   method: 'POST'
-    // }).then(function(response) {
-    //    console.log(response);
-    //   //  var coords = JSON.parse('{x: 12, y:13}');
-    //   var coords = response;
-    //    console.log(coords.xcoord);
-    // });
     }, function() {
     });
   }
@@ -84,9 +71,8 @@ function search(){
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(dlbl);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(dests);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(dsub);
-
-
 }
+
 function setPickUp(){
   document.getElementById('psubmit').addEventListener('click',function(){
     var address=$("#pickup").val();
