@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,SelectField, IntegerField,PasswordField
+from wtforms import StringField,SelectField, IntegerField,PasswordField,HiddenField
 from wtforms.validators import InputRequired
 
 class clientForm(FlaskForm):
@@ -12,6 +12,7 @@ class clientForm(FlaskForm):
     cadd2=StringField('Address 2', validators=[InputRequired()])
     ccity= StringField('City', validators=[InputRequired()])
     cparish= StringField('Parish', validators=[InputRequired()])
+
 
 class driverForm(FlaskForm):
     dfname= StringField('First Name', validators=[InputRequired()])
