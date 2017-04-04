@@ -131,6 +131,7 @@ def login():
             # return redirect(next or url_for('home'))
         else:
             print 'FAIL'
+            #if statement to validate which template to render
     return render_template('login.html',form=lform)
 
 @login_manager.user_loader
