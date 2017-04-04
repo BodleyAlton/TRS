@@ -135,7 +135,7 @@ def login():
 
 @login_manager.user_loader
 def load_user(id):
-    return Clientdb.query.get(int(id))
+    return Users.query.get(int(userID))
 
 @app.route("/logout")
 @login_required
@@ -222,7 +222,7 @@ def getDrivers(seat,vtype,driver,cdist):
     print pdrivers
     print "GET DRIVERS"
     return str(pdrivers)
-    
+
 @app.route('/save-coord', methods=['GET', 'POST'])
 def save_coord():
     pickup=request.form['pickUpLoc']
