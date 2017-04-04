@@ -1,41 +1,53 @@
-$(document).ready(function(){
-$("#submit").click(function(){
-    event.preventDefault();
-    var location = $("#pickup").val();
-    var destination = $("#dest").val();
-    var travel_size = $("#seat").val();
-    var driver = $("#driver").val();
-    var vehicle_class = $("#vtype").val();
-    var waiting_factor = $("#wfactor").val();
-    
-    // Returns successful data submission message when the entered information is stored in database.
-    var taxi_request = {
-        'location': location,
-        'destination': destination,
-        'travel_size': travel_size,
-        'driver': driver,
-        'vehicle_class': vehicle_class,
-        'waiting_factor': waiting_factor,
-        
-    };
-    
-    var data=JSON.stringify(taxi_request);
-    
-    // AJAX Code To Submit Form.
-    $.ajax({
-        type: "POST",
-        url: "request",
-        data: data,
-        dataType:"json",
-        contentType:"application/json",
-        success:function(data){
-            console.log(data);
-        },
-        error: function()
-        {
-            console.log('Error');
-        }
-    });
-    return false;
-});
-});
+var duration;
+var allDrivers;
+
+function pdrivers(driver,pickup){
+  allDrivers=driver
+  console.log("Here")
+  for(y=0; y < driver.length; y++){
+    drivers=driver[y][2][0]+","+driver[y][2][1];
+    dist(drivers,pickup,driver,y);
+  }
+}
+
+function dist(driver,pickup,drivers,y){
+  var service = new google.maps.DistanceMatrixService();
+  service.getDistanceMatrix(
+    {
+      origins: [driver],
+      destinations: [pickup],
+      travelMode: 'DRIVING',
+      avoidHighways: false,
+      avoidTolls: false,
+    }, function(response, status){
+      if (status == 'OK') {
+    var origins = response.originAddresses;
+    var destinations = response.destinationAddresses;
+    for (var i = 0; i < origins.length; i++) {
+      var results = response.rows[i].elements;
+      for (var j = 0; j < results.length; j++) {
+        var element = results[j];
+        var distance = element.distance.text;
+        duration = element.duration.value;
+        var from = origins[i];
+        var to = destinations[j];
+        drivers[y].push(duration);
+        insertionSort(y);
+        console.log("final")
+        console.log(allDrivers)
+      }
+    }
+  }
+  });
+}
+function insertionSort(y){
+  for(x = 0; x < allDrivers.length; x++){
+    if (allDrivers[x][3] != 'undifined'){
+      if (allDrivers[x][3] > allDrivers[y][3]){
+      temp=allDrivers[y]
+      allDrivers[y]=allDrivers[x]
+      allDrivers[x]=temp
+      }
+    }
+  }
+}

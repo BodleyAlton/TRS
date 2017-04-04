@@ -39,3 +39,23 @@ class Job():
 
     def drive(self):
         return self.driver.name
+
+def getKey(drivers):
+	return drivers[1]
+def getEKey(drivers):
+	return drivers[3]
+def binary_search(A, value, start, end):
+    if start == end:
+        if A[start][1] > value:
+            return start
+        else:
+            return start+1
+    if start > end:
+        return start
+    mid = (start+end)//2
+    if A[mid][1] < value:
+        return binary_search(A, value, mid+1, end)
+    elif A[mid][1] > value:
+        return binary_search(A, value, start, mid-1)
+    else:
+        return mid

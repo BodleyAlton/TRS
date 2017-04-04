@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/d_stat.css"> 
+{% endblock %}
+
+{% block main %}
+
+<label for='status'> Driver Status</label>
+<select id="status">
+    <option value="Busy">Busy</option>
+    <option value="Availble">Available</option>
+    <option value="Offline">Offine</option>
+</select>
+
+<h3> Job History </h3>
+{{job_date}} {{job_time}}
+{% endblock %}

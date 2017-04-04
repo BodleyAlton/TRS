@@ -6,14 +6,14 @@
 
 body {
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    background: url('http://maps.google.com/maps/api/staticmap?center=18.0123976,-76.7480805&zoom=14&size=600x400&maptype=hybrid&sensor=false&language=&markers=color:red|label:none|18.0123976,-76.7480805') no-repeat center center fixed;
+    background: url("{{url_for('static', filename='img/bgmain.png')}}") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
 }
 
-h1,
+h1,`
 h2,
 h3,
 h4,
@@ -113,7 +113,7 @@ footer {
 
 footer p {
     margin: 0;
-    padding: 50px 0;
+    padding: 10px 0;
 }
 
 @media screen and (min-width:768px) {
@@ -194,3 +194,4 @@ footer p {
         clear: both;
     }
 }
+

@@ -3,71 +3,78 @@ from flask.ext.login import UserMixin
 
 class Clientdb(db.Model, UserMixin):
 	__tablename__ = 'client'
-	id= db.Column('id', db.Integer, autoincrement=True, primary_key=True)
+	userCID= db.Column('userCID', db.Unicode, primary_key=True)
 	cfname= db.Column('cfname', db.Unicode)
 	clname= db.Column('clname', db.Unicode)
 	ccontact= db.Column('ccontact', db.Integer)
 	cemail= db.Column('cemail',db.Unicode, unique=True)
-	cpassword= db.Column('cpassword', db.Unicode)
 	cadd1=db.column('cadd1', db.Unicode)
 	cadd2=db.Column('cadd2',db.Unicode)
 	ccity= db.Column('city', db.Unicode)
 	cparish= db.Column('parish', db.Unicode)
-
-	def __init__(self,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish):
+	cstatus= db.Column('cstatus', db.Unicode)
+    
+	
+	def __init__(self,userCID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus):
+		self.userCID= userCID
 		self.cfname= cfname
 		self.clname= clname
 		self.ccontact= ccontact
 		self.cemail= cemail
-		self.cpassword=cpassword
 		self.cadd1=cadd1
 		self.cadd2=cadd2
 		self.ccity= ccity
 		self.cparish= cparish
+		self.cstatus= cstatus
 
-		def is_authenticated(self):
-			return True
-		def is_active(self):
-			return True
-		def is_anonymous(self):
-			return False
-		def get_id(self):
-			try:
-				return unicode(self.id)
-			except NameError:
-				return str(self.id)
+		# def is_authenticated(self):
+		# 	return True
+		# def is_active(self):
+		# 	return True
+		# def is_anonymous(self):
+		# 	return False
+		# def get_id(self):
+		# 	try:
+		# 		return unicode(self.userCID)
+		# 	except NameError:
+		# 		return str(self.userCID)
 		def __repr__(self):
-			return '<Client %r>' % self.cid
+			return '<Client %r>' % self.userCID
 
-class Driver(db.Model):
+class Driverdb(db.Model):
 	__tablename__ = 'driver'
-	dtrn= db.Column('dtrn', db.Integer, primary_key= True)
+	userDID= db.Column('userDID',db.Unicode, primary_key= True)
+	dtrn= db.Column('dtrn', db.Integer, unique= True)
 	dfname= db.Column('dfname', db.Unicode)
 	dlname= db.Column('dlname', db.Unicode)
 	dcontact= db.Column('dcontact',db.Integer)
 	demail= db.Column('demail',db.Unicode)
-	dpassword= db.Column('dpassword', db.Unicode)
 	daddr1= db.Column('daddr1', db.Unicode)
 	daddr2= db.Column('daddr2', db.Unicode)
 	dcity= db.Column('dcity', db.Unicode)
 	dparish= db.Column('dparish', db.Unicode)
 
-	def __init__(self,dtrn,dfname,dlname,dcontact,demail,dpassword,daddr1,daddr2,dcity,dparish):
+
+
+	def __init__(self,userDID,dtrn,dfname,dlname,dcontact,demail,daddr1,daddr2,dcity,dparish):
+		self.userDID=userDID
 		self.dtrn= dtrn
 		self.dfname= dfname
 		self.dlname= dlname
 		self.dcontact=dcontact
 		self.demail=demail
-		self.dpassword=dpassword
 		self.daddr1 =daddr1
 		self.daddr2=daddr2
 		self.dcity= dcity
 		self.dparish= dparish
 
+		def __repr__(self):
+			return '<Client %r>' % self.userDID
 
-class Operator(db.Model):
+
+class Operatordb(db.Model):
 	__tablename__ = 'operator'
-	opID= db.Column('opID', db.Integer, primary_key=True)
+	userOID= db.Column('userOID', db.Unicode, primary_key=True)
 	ofname= db.Column('ofname', db.Unicode)
 	olname= db.Column('olname', db.Unicode)
 	oadd1=db.Column('oadd1',db.Unicode)
@@ -76,7 +83,9 @@ class Operator(db.Model):
 	oparish= db.Column('oparish', db.Unicode)
 	otrn= db.Column('otrn', db.Integer)
 
-	def __init__(self,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
+
+	def __init__(self,userOID,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
+		self.userOID=userOID
 		self.ofname= ofname
 		self.olname= olname
 		self.otrn= otrn
@@ -106,7 +115,7 @@ class Vehicle(db.Model):
 class View(db.Model):		#Report that the operator would see from viewing the driver
  	__tablename__= 'views'
  	dtrn= db.Column('dtrn',db.Integer, primary_key=True)
-	id=db.Column('id',db.Integer, primary_key=True)
+	cid=db.Column('cid',db.Unicode, primary_key=True)
 	plateNum=db.Column('plate',db.Integer,primary_key=True)
 	opID=db.Column('opID',db.Integer,primary_key=True)
 	job_date= db.Column('date',db.Date)
@@ -141,3 +150,48 @@ class Operates(db.Model):
  	def __init__(self,dtrn,platenum):
 		self.dtrn= dtrn
 		self.platenum=platenum
+
+class Users(db.Model):
+ 	__tablename__= 'users'
+ 	id= db.Column('id',db.Unicode, primary_key=True)
+ 	email= db.Column('email',db.Unicode)
+ 	password= db.Column('password',db.Unicode) 
+ 	utype= db.Column('utype',db.Unicode)	
+
+ 	def __init__(self,id,email,password,utype):
+		self.id= id
+		self.email= email
+		self.password= password
+		self.utype= utype
+
+	def is_authenticated(self):
+			return True
+	def is_active(self):
+		return True
+	def is_anonymous(self):
+		return False
+	def get_id(self):
+		try:
+			return unicode(self.id)
+		except NameError:
+			return str(self.id)
+
+class Driver_Location(db.Model):
+ 	__tablename__= 'driver_location'
+ 	dID= db.Column('dID',db.Unicode, primary_key=True)
+ 	lat= db.Column('lat',db.Float)
+ 	longi= db.Column('longi',db.Float) 
+ 	pos= db.Column('pos',db.Float)	
+
+ 	def __init__(self,userID,email,password,utype):
+		self.dID= dID
+		self.lat= lat
+		self.longi= longi
+		self.pos= pos
+
+class IdValue(db.Model):
+ 	__tablename__= 'idvalue'
+ 	idV= db.Column('idV',db.Integer, primary_key=True)
+ 	cValue= db.Column('cValue',db.Integer)
+ 	dValue= db.Column('dValue',db.Integer) 
+ 	oValue= db.Column('oValue',db.Integer)	

@@ -33,6 +33,8 @@ class operatorForm(FlaskForm):
     ocity= StringField('City', validators=[InputRequired()])
     oparish= StringField('Parish', validators=[InputRequired()])
     otrn=IntegerField('TRN',validators=[InputRequired()])
+    oemail= StringField('E-mail',validators=[InputRequired()])
+    opassword= PasswordField('Password',validators=[InputRequired()])
 
 class RequestForm(FlaskForm):
     seat=IntegerField('No. of Persons',validators=[InputRequired()])

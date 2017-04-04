@@ -3,18 +3,25 @@
   <head>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js">
     </script>
+
     <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <link rel="stylesheet" href="{{url_for('static',filename='css/map.css')}}"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-      <label id="p" for="pickup">Pick Up:</label>
+      <!-- <label id="p" for="pickup">Pick Up:</label> -->
+      <div id="sl">
       <input id="pickup" class="controls" type="text" placeholder="Search Pickup Location">
-      <input id='psubmit' type="submit" value="search"/>
-      <label id="d"for="dest">Destination:</label>
+      <i class="fa fa-search w3-xxxlarge " id='psubmit' type="submit" value="search"> </i>
+      </div>
+      <!-- <label id="d" for="dest">Destination:</label> -->
+      <div id="sd">
       <input id="dest" name="dest" class="controls" type="text" placeholder="Where to?">
-      <input id='dsubmit' type="submit" value="search"/>
+      <i class="fa fa-search w3-xxxlarge " id='dsubmit' type="submit" value="search"></i>
+      </div>
       <div id="map"></div>
       <div id="req_form">
         <form method='POST' action='/request'>
@@ -36,14 +43,14 @@
             <option value="time">Time</option>
             <option value="type">Vehicle Type</option>
           </select>
-          <label for='driverN'>Driver's Name</label>
-          <input id='driverN' type="text" placeholder="DO you have a favourite driver" />
-          <input type="submit" id="request" value="Request Cab" />
+          <p><label for='driverN'>Driver's Name</label>
+          <input id='driverN' type="text" placeholder="DO you have a favourite driver" /> </p>
+          <input type="submit" id="request" alt="Request Cab"  />
         </form>
       </div>
+      <script type="text/javascript" src="{{url_for('static',filename='js/request.js')}}"></script>
       <script type="text/javascript" src= "{{url_for('static',filename='js/map.js')}}"></script>
-    </script>
-  <script async defer
+    <script async defer
   src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDy8tt5vdmipUlu4mdbvtoaiXgqHSC4UkI&libraries=geometry,places&region=JM&callback=createMap">
   </script>
 </body>
