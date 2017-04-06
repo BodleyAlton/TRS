@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <div class="cust_notif">
+    <h1> Your drive is on it's way</h1>
+    
+    <div class="map1"> {% include "map.html" %} </div>
+    
+    <div class="trip_info">
+    <h2> Trip Details </h2>
+    <h4>Driver Name: {{ dfname }} {{ dlname }} </h4>
+    <h4>Car colour: {{ vcolour }} </h4>
+    <h4>Plate Number: {{ platenum }} </h4>
+    <h4> ETA of Driver: {{ eta_driver }} </h4>
+    <p> You are expected to arrive at {{ d_loc }} in {{ eta }} </p>
+    </div>
+</html> 

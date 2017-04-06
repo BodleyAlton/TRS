@@ -305,25 +305,52 @@ def getDrivers(seat,vtype,driver,cdist):
 #     print  "PICKUP: "+pickup+", "+"DEST: "+ dest
 
 @app.route('/report', methods=["GET"])
+@login_required
 def report():
     # store all vehicles from database in this variable vehiclesss=
     return render_template("report.html")
     
 @app.route('/view_driver', methods=["GET"])
+@login_required
 def view_driver():
     # store all drivers from database in this variable driversss=
     return render_template("view_driver.html")
     
 @app.route('/view_vehicle', methods=["GET"])
+@login_required
 def view_vehicles():
     # store all vehicles from database in this variable vehiclesss=
     return render_template("view_vehicles.html")
     
 @app.route('/view_clients', methods=["GET"])
+@login_required
 def view_clients():
     # store all clients from database in this variable clientsss=
     return render_template("view_clients.html")
     
 @app.route("/operator", methods=["GET"])
+@login_required
 def opp_main():
     return render_template("operator_main.html")
+    
+@app.route("/operates", methods=["POST","GET"])
+@login_required
+def operates():
+    opform=OperatesForm()
+    if request.method=="POST":
+        if opform.validate_on_submit():
+            #Add queries to check if plate number and trn are already in database
+            return render_template("operator_main.html")
+    return render_template('operates.html',form=opform)
+    
+    
+@app.route("/customer_notification", methods=["GET"])
+def customer_notification():
+    dfname= "" #received from database
+    dlname= ""
+    vcolour= ""
+    platenum= ""
+    eta_driver= ""
+    d_loc= ""
+    eta= ""
+    return render_template("customer_notif.html", dfname=dfname,dlname=dlname, vcolour=vcolour, platenum=platenum, eta_driver=eta_driver, d_loc=d_loc, eta=eta )
