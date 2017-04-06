@@ -59,11 +59,25 @@ def home():
 
 @app.route('/map/new_request')
 @login_required
-def new_request():    
+def new_request():
+    if current_user.id[0] == 'd':
+            return redirect(url_for('driver_main'))
     return render_template('map.html')
+@app.route("/driver/main")
+@login_required
+def driver_main():
+    return render_template('driver_main.html')
+
+@app.route("/operator/main")
+@login_required
+def operator_main():
+    return render_template('operator_main.html')
 
 @app.route('/add-client', methods=['POST','GET'])
 def add_client():
+    if current_user.is_authenticated:
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
     cform=clientForm()
     if request.method=='POST':
         if cform.validate_on_submit():
@@ -97,7 +111,15 @@ def add_client():
     return render_template('add_client.html',form=cform)
 
 @app.route('/add-driver', methods=['POST','GET'])
+@login_required
 def add_driver():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     dform=driverForm()
     if request.method=='POST':
         if dform.validate_on_submit():
@@ -131,7 +153,15 @@ def add_driver():
     return render_template('add_driver.html',form=dform)
 
 @app.route('/add-operator', methods=['POST','GET'])
+@login_required
 def add_operator():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     oform=operatorForm()
     if request.method=='POST':
         if oform.validate_on_submit():
@@ -164,7 +194,15 @@ def add_operator():
     return render_template('add_operator.html',form=oform)
 
 @app.route('/add-vehicle', methods=['POST','GET'])
+@login_required
 def add_vehicle():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     vform=vehicleForm()
     if request.method=='POST':
         if vform.validate_on_submit():
@@ -194,19 +232,16 @@ def login():
             userr = Users.query.filter_by(email=un,password = pw).first()
             print userr;
             login_user(userr)
-            # if current_user.id[0]=="D":
+            if current_user.id[0]=="c":
                 #push id to javascript
-            return redirect(url_for ('new_request'))
-            print "Loged In"
+                return redirect(url_for ('new_request'))
+            if current_user.id[0]=="d":
+                return redirect(url_for('driver_main'))
+            if current_user.id[0]=="o":
+                return redirect(url_for('operator_main'))
             next=request.args.get('next')
-            # if not is_safe_url(next):
-            #     return abort(400)
-            # return redirect(next or url_for('home'))
         else:
             print 'FAIL'
-            #if statement to validate which template to render
-            # if current_user.id[0]=='C':
-            #     return render_template('')
     return render_template('login.html',form=lform)
 
 @login_manager.user_loader
@@ -222,7 +257,13 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route("/request", methods=["POST","GET"])
+@login_required
 def request_cab():
+    if current_user.id[0] != 'c' or  current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            return redirect(url_for('login'))
     if request.method=="POST":
         seat = request.form['seat']
         vtype= request.form['vehicle']
@@ -305,25 +346,57 @@ def getDrivers(seat,vtype,driver,cdist):
 #     print  "PICKUP: "+pickup+", "+"DEST: "+ dest
 
 @app.route('/report', methods=["GET"])
+@login_required
 def report():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     # store all vehicles from database in this variable vehiclesss=
     return render_template("report.html")
-    
+
 @app.route('/view_driver', methods=["GET"])
+@login_required
 def view_driver():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     # store all drivers from database in this variable driversss=
     return render_template("view_driver.html")
-    
+
 @app.route('/view_vehicle', methods=["GET"])
+@login_required
 def view_vehicles():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     # store all vehicles from database in this variable vehiclesss=
     return render_template("view_vehicles.html")
-    
+
 @app.route('/view_clients', methods=["GET"])
+@login_required
 def view_clients():
+    if current_user.id[0] != 'o':
+        if current_user.id[0]=='d':
+            return redirect(url_for('driver_main'))
+        else:
+            if current_user.id[0]=='c':
+                return redirect(url_for('new_request'))
+            return redirect(url_for('login'))
     # store all clients from database in this variable clientsss=
     return render_template("view_clients.html")
-    
-@app.route("/operator", methods=["GET"])
-def opp_main():
-    return render_template("operator_main.html")
+
+# @app.route("/operator", methods=["GET"])
+# def opp_main():
+#     return render_template("operator_main.html")
