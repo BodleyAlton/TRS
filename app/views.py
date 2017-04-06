@@ -1,7 +1,7 @@
 from app import app,db,login_manager
 from flask import render_template, request, redirect, url_for, jsonify,flash
 from forms import *
-from flask_sse import sse
+# from flask_sse import sse
 from models import *
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
