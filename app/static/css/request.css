@@ -1,0 +1,19 @@
+.request_container{
+    background-image: url("{{url_for('static', filename='img/op_request.jpg')}}") no-repeat center top;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -ms-background-size: cover;
+    background-attachment: fixed;
+    text-align: center;
+    
+}
+
+.form_main{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    border: 3px solid #73AD21;
+}
