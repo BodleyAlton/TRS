@@ -196,7 +196,7 @@ def login():
             login_user(userr)
             # if current_user.id[0]=="D":
                 #push id to javascript
-            return redirect(url_for ('new_request'))
+            #return redirect(url_for ('new_request'))
             print "Loged In"
             next=request.args.get('next')
             # if not is_safe_url(next):
