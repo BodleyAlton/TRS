@@ -354,3 +354,8 @@ def customer_notification():
     d_loc= ""
     eta= ""
     return render_template("customer_notif.html", dfname=dfname,dlname=dlname, vcolour=vcolour, platenum=platenum, eta_driver=eta_driver, d_loc=d_loc, eta=eta )
+    
+@app.route("/driver", methods=["GET"])
+#@login_required
+def driver_main():
+    return render_template("driver_main.html")

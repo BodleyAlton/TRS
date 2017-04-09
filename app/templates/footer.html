@@ -13,6 +13,8 @@
           <ul class="nav navbar-nav">
            {% if not session.logged_in %}
             <li><a href="{{ url_for('add_operator') }}">Operator</a></li>
+            {% endif %}
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if not session.logged_in %}

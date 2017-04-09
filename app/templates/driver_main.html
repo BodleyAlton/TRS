@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 
 {% block css %}
-    <link rel="stylesheet" href="/static/css/d_stat.css"> 
+    <link rel="stylesheet" href="/static/css/driver.css"> 
 {% endblock %}
 
 {% block main %}
-
-<label for='status'> Driver Status</label>
-<select id="status">
-    <option value="Busy">Busy</option>
-    <option value="Availble">Available</option>
-    <option value="Offline">Offine</option>
-</select>
+<h1> Welcome </h1>
+<button id="start"> Start</button>
+<button id="stop"> Stop</button>
+<!--<label for='status'> Driver Status</label>-->
+<!--<select id="status">-->
+<!--    <option value="Busy">Busy</option>-->
+<!--    <option value="Availble">Available</option>-->
+<!--    <option value="Offline">Offine</option>-->
+<!--</select>-->
 
 <h3> Job History </h3>
 {{job_date}} {{job_time}}
