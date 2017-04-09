@@ -400,14 +400,10 @@ def view_clients():
 @login_required
 def dloc_update():
     if request.method=='POST':
-        print "HERE"
-        # driverID=current_user.id
+        driverID=current_user.id
         lat=request.form['dlat']
         lng=request.form['dlng']
-        # print "DRIVERID: "+str(driverID)
-        print lat
-        print lng
-    return success
+    return "success"
 # @app.route("/operator", methods=["GET"])
 # def opp_main():
 #     return render_template("operator_main.html")
