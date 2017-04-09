@@ -17,16 +17,15 @@ $(document).ready(function(){
               };
             console.log("current pos; lat:"+dpos.lat+" lng:"+dpos.lng);
             console.log(url)
-          //   $.ajax({url,
-          //   data:JSON.stringify({
-          //     dlat: lat,
-          //     dlng: lng
-          //   }),
-          //   method: 'POST'
-          // }).done(function(status){
-          //     console.log("DONE")
-          //   })},
-            ,function() {
+            $.ajax({url,
+            data:{
+              dlat: dpos.lat,
+              dlng: dpos.lng
+            },
+            method: 'POST'
+          }).done(function(status){
+              console.log(status)
+            })},function() {
             });
           }
         },intv);
