@@ -234,16 +234,11 @@ def login():
             login_user(userr)
             if current_user.id[0]=="c":
                 #push id to javascript
-<<<<<<< HEAD
-            #return redirect(url_for ('new_request'))
-            print "Loged In"
-=======
                 return redirect(url_for ('new_request'))
             if current_user.id[0]=="d":
                 return redirect(url_for('driver_main'))
             if current_user.id[0]=="o":
                 return redirect(url_for('operator_main'))
->>>>>>> Main
             next=request.args.get('next')
         else:
             print 'FAIL'
@@ -401,7 +396,6 @@ def view_clients():
             return redirect(url_for('login'))
     # store all clients from database in this variable clientsss=
     return render_template("view_clients.html")
-<<<<<<< HEAD
     
 @app.route("/operator", methods=["GET"])
 @login_required
@@ -434,9 +428,3 @@ def customer_notification():
 #@login_required
 def driver_main():
     return render_template("driver_main.html")
-=======
-
-# @app.route("/operator", methods=["GET"])
-# def opp_main():
-#     return render_template("operator_main.html")
->>>>>>> Main
