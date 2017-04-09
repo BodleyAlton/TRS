@@ -394,7 +394,7 @@ def view_clients():
             if current_user.id[0]=='c':
                 return redirect(url_for('new_request'))
             return redirect(url_for('login'))
-    # store all clients from database in this variable clientsss=
+    # store all clients from database in this variable clientss=
     return render_template("view_clients.html")
 @app.route("/dloc-update", methods=['POST','GET'])
 @login_required
@@ -404,6 +404,3 @@ def dloc_update():
         lat=request.form['dlat']
         lng=request.form['dlng']
     return "success"
-# @app.route("/operator", methods=["GET"])
-# def opp_main():
-#     return render_template("operator_main.html")

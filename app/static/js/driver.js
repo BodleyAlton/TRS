@@ -1,5 +1,5 @@
 var run;
-var intv= 2000//15000;
+var intv= 15000;
 var dpos;
 var lat;
 var lng;
@@ -36,65 +36,3 @@ $(document).ready(function(){
     clearInterval(run);
   });
 });
-// $(document).ready(function(){
-//   checkStat();
-//  });
-//
-// function checkStat(){
-//   $('#status').on('click',function(){
-//     if($('#status').val()!='Offline'){
-//       active();
-//       // stat();
-//     }
-//     else {
-//       inactive();
-//       // stop();
-//     }
-//   });
-// }
-//
-// function inactive(){
-//   status = "inactive";
-//   console.log("stat: "+status)
-//   // clearInterval(run);
-//   stat(status);
-//   // stop();
-// }
-//
-// function active(){
-//   status="active";
-//   console.log("stat: "+status)
-//   stat(status);
-// }
-//
-// function stat(status){
-//   console.log("MY STAT: "+status)
-//   if (status =='active'){
-//     run= setInterval(function(){
-//       // console.log("STAT:")
-//       // console.log(run)
-//       if (navigator.geolocation) {
-//         navigator.geolocation.getCurrentPosition(function(position) {
-//           dpos = {
-//             lat: position.coords.latitude,
-//             lng: position.coords.longitude
-//           };
-//         console.log("current pos; lat:"+dpos.lat+" lng:"+dpos.lng);},
-//         function() {
-//         });
-//       }
-//     },3000);
-//   }
-//   else {//console.log("ELSE B4:")
-//   // console.log(run)
-//   clearInterval(run);
-//   // console.log("ELSE Aftr:")
-//   //   console.log(run)
-//   //   // console.log("STOP")
-//   //   console.log("STATF: "+status)
-//   }
-// }
-// function stop(){
-//   console.log('OFFLINE')
-//   clearInterval(run);
-// }
