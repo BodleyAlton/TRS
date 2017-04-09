@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 
 {% block css %}
-    <link rel="stylesheet" href="/static/css/d_stat.css"> 
+    <link rel="stylesheet" href="/static/css/d_stat.css">
 {% endblock %}
 
 {% block main %}
 
 <label for='status'> Driver Status</label>
-<select id="status">
-    <option value="Busy">Busy</option>
+<button id='start'>Start</button>
+<button id='stop'>Stop</button>
+<!-- <select id="status">
+    <option value="Offline">Offline</option>
     <option value="Availble">Available</option>
-    <option value="Offline">Offine</option>
-</select>
+    <option value="Busy">Busy</option>
+</select> -->
 
 <h3> Job History </h3>
 {{job_date}} {{job_time}}
 {% endblock %}
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="/static/js/driver.js"> </script>
+{% endblock%}
