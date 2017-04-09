@@ -5,16 +5,20 @@
 {% endblock %}
 
 {% block main %}
-<h1> Welcome </h1>
-<button id="start"> Start</button>
-<button id="stop"> Stop</button>
-<!--<label for='status'> Driver Status</label>-->
-<!--<select id="status">-->
-<!--    <option value="Busy">Busy</option>-->
-<!--    <option value="Availble">Available</option>-->
-<!--    <option value="Offline">Offine</option>-->
-<!--</select>-->
+
+<label for='status'> Driver Status</label>
+<button id='start'>Start</button>
+<button id='stop'>Stop</button>
+<!-- <select id="status">
+    <option value="Offline">Offline</option>
+    <option value="Availble">Available</option>
+    <option value="Busy">Busy</option>
+</select> -->
 
 <h3> Job History </h3>
 {{job_date}} {{job_time}}
 {% endblock %}
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="/static/js/driver.js"> </script>
+{% endblock%}

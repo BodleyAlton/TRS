@@ -1,7 +1,7 @@
 from app import app,db,login_manager
 from flask import render_template, request, redirect, url_for, jsonify,flash
 from forms import *
-from flask_sse import sse
+# from flask_sse import sse
 from models import *
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
@@ -63,6 +63,7 @@ def new_request():
     if current_user.id[0] == 'd':
             return redirect(url_for('driver_main'))
     return render_template('map.html')
+
 @app.route("/driver/main")
 @login_required
 def driver_main():
@@ -233,7 +234,6 @@ def login():
             print userr;
             login_user(userr)
             if current_user.id[0]=="c":
-                #push id to javascript
                 return redirect(url_for ('new_request'))
             if current_user.id[0]=="d":
                 return redirect(url_for('driver_main'))
@@ -285,20 +285,20 @@ def request_cab():
             contact = contact['ccontact']
         global creq
         creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
-        print "SEAT: "+ str(creq.seat)
-        print "TYPE: "+ creq.vtype
-        print "FACTOR: "+creq.wfactor
-        print "ID: "+ str(creq.cid)
-        print "DRIVER: "+creq.driver
-        print "PICK UP: "+creq.pickup
-        print "DEST:"+creq.dest
-        print "FNAME: "+ creq.fname
-        print "LNAME: "+ creq.lname
-        print "CONTACT: "+ str(creq.contact)
-        print "DIST: "+ str(creq.dist())
+        # print "SEAT: "+ str(creq.seat)
+        # print "TYPE: "+ creq.vtype
+        # print "FACTOR: "+creq.wfactor
+        # print "ID: "+ str(creq.cid)
+        # print "DRIVER: "+creq.driver
+        # print "PICK UP: "+creq.pickup
+        # print "DEST:"+creq.dest
+        # print "FNAME: "+ creq.fname
+        # print "LNAME: "+ creq.lname
+        # print "CONTACT: "+ str(creq.contact)
+        # print "DIST: "+ str(creq.dist())
         cdist=creq.dist()
         alist=getDrivers(seat,vtype,driver,cdist)
-        print "REQUEST ROUTE"
+        # print "REQUEST ROUTE"
         return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
@@ -396,6 +396,7 @@ def view_clients():
             return redirect(url_for('login'))
     # store all clients from database in this variable clientsss=
     return render_template("view_clients.html")
+
     
 @app.route("/operator", methods=["GET"])
 @login_required
@@ -424,7 +425,24 @@ def customer_notification():
     eta= ""
     return render_template("customer_notif.html", dfname=dfname,dlname=dlname, vcolour=vcolour, platenum=platenum, eta_driver=eta_driver, d_loc=d_loc, eta=eta )
     
-@app.route("/driver", methods=["GET"])
-#@login_required
-def driver_main():
-    return render_template("driver_main.html")
+# @app.route("/driver", methods=["GET"])
+# #@login_required
+# def driver_main():
+#     return render_template("driver_main.html")
+
+@app.route("/dloc-update", methods=['POST','GET'])
+@login_required
+def dloc_update():
+    if request.method=='POST':
+        print "HERE"
+        # driverID=current_user.id
+        lat=request.form['dlat']
+        lng=request.form['dlng']
+        # print "DRIVERID: "+str(driverID)
+        print lat
+        print lng
+    return success
+# @app.route("/operator", methods=["GET"])
+# def opp_main():
+#     return render_template("operator_main.html")
+
