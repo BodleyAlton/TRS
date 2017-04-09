@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% include "header.html" %}
+
+{% block css%}
+    <link rel="stylesheet" href="/static/css/operator.css">
+{% endblock %}
+
+{% block main %}
+<div class="main_opp">
+<div> 
+<a href="{{url_for('report')}}">
+<img class="img-circle" src="{{url_for('static', filename='img/report.jpg')}}" alt="Generate Reports" width="300" height="300" border="0">
+</a>
+</div>
+
+<div > 
+<a href="{{url_for('add_driver')}}">
+<img class="img-circle" src="{{url_for('static', filename='img/newdriver.jpg')}}" alt="Generate Reports" width="300" height="300" border="0">
+</a>
+</div>
+
+<div > 
+<a href="map.html">
+<img class="img-circle" src="{{url_for('static', filename='img/op_request.jpg')}}" alt="Generate Reports" width="300" height="300" border="0">
+</a>
+</div>
+</div>
+{% endblock %}

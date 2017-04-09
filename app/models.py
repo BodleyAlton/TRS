@@ -8,53 +8,63 @@ class Clientdb(db.Model, UserMixin):
 	clname= db.Column('clname', db.Unicode)
 	ccontact= db.Column('ccontact', db.Integer)
 	cemail= db.Column('cemail',db.Unicode, unique=True)
-	cpassword= db.Column('cpassword', db.Unicode)
 	cadd1=db.column('cadd1', db.Unicode)
 	cadd2=db.Column('cadd2',db.Unicode)
 	ccity= db.Column('city', db.Unicode)
 	cparish= db.Column('parish', db.Unicode)
+<<<<<<< HEAD
     
 	
 	def __init__(self,userCID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish):
+=======
+	cstatus= db.Column('cstatus', db.Unicode)
+    
+	
+	def __init__(self,userCID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus):
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.userCID= userCID
 		self.cfname= cfname
 		self.clname= clname
 		self.ccontact= ccontact
 		self.cemail= cemail
-		self.cpassword=cpassword
 		self.cadd1=cadd1
 		self.cadd2=cadd2
 		self.ccity= ccity
 		self.cparish= cparish
+		self.cstatus= cstatus
 
-		def is_authenticated(self):
-			return True
-		def is_active(self):
-			return True
-		def is_anonymous(self):
-			return False
-		def get_id(self):
-			try:
-				return unicode(self.id)
-			except NameError:
-				return str(self.id)
+		# def is_authenticated(self):
+		# 	return True
+		# def is_active(self):
+		# 	return True
+		# def is_anonymous(self):
+		# 	return False
+		# def get_id(self):
+		# 	try:
+		# 		return unicode(self.userCID)
+		# 	except NameError:
+		# 		return str(self.userCID)
 		def __repr__(self):
-			return '<Client %r>' % self.cid
+			return '<Client %r>' % self.userCID
 
-class Driver(db.Model):
+class Driverdb(db.Model):
 	__tablename__ = 'driver'
+<<<<<<< HEAD
 	dID= db.Column('dID',db.Unicode, primary_key= True)
+=======
+	userDID= db.Column('userDID',db.Unicode, primary_key= True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 	dtrn= db.Column('dtrn', db.Integer, unique= True)
 	dfname= db.Column('dfname', db.Unicode)
 	dlname= db.Column('dlname', db.Unicode)
 	dcontact= db.Column('dcontact',db.Integer)
 	demail= db.Column('demail',db.Unicode)
-	dpassword= db.Column('dpassword', db.Unicode)
 	daddr1= db.Column('daddr1', db.Unicode)
 	daddr2= db.Column('daddr2', db.Unicode)
 	dcity= db.Column('dcity', db.Unicode)
 	dparish= db.Column('dparish', db.Unicode)
 
+<<<<<<< HEAD
 	def getIdValue(did):
     		newId=''
     		newId= cid.split('d')
@@ -71,21 +81,33 @@ class Driver(db.Model):
 
 
 	def __init__(self,dtrn,dfname,dlname,dcontact,demail,dpassword,daddr1,daddr2,dcity,dparish):
+=======
+
+
+	def __init__(self,userDID,dtrn,dfname,dlname,dcontact,demail,daddr1,daddr2,dcity,dparish):
+		self.userDID=userDID
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.dtrn= dtrn
 		self.dfname= dfname
 		self.dlname= dlname
 		self.dcontact=dcontact
 		self.demail=demail
-		self.dpassword=dpassword
 		self.daddr1 =daddr1
 		self.daddr2=daddr2
 		self.dcity= dcity
 		self.dparish= dparish
 
+		def __repr__(self):
+			return '<Client %r>' % self.userDID
 
-class Operator(db.Model):
+
+class Operatordb(db.Model):
 	__tablename__ = 'operator'
+<<<<<<< HEAD
 	opID= db.Column('opID', db.Unicode, primary_key=True)
+=======
+	userOID= db.Column('userOID', db.Unicode, primary_key=True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 	ofname= db.Column('ofname', db.Unicode)
 	olname= db.Column('olname', db.Unicode)
 	oadd1=db.Column('oadd1',db.Unicode)
@@ -94,6 +116,7 @@ class Operator(db.Model):
 	oparish= db.Column('oparish', db.Unicode)
 	otrn= db.Column('otrn', db.Integer)
 
+<<<<<<< HEAD
 	def getIdValue(oid):
     		newId=''
     		newId= cid.split('o')
@@ -109,6 +132,11 @@ class Operator(db.Model):
 
 
 	def __init__(self,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
+=======
+
+	def __init__(self,userOID,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
+		self.userOID=userOID
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.ofname= ofname
 		self.olname= olname
 		self.otrn= otrn
@@ -176,17 +204,41 @@ class Operates(db.Model):
 
 class Users(db.Model):
  	__tablename__= 'users'
+<<<<<<< HEAD
  	userID= db.Column('userID',db.Unicode, primary_key=True)
+=======
+ 	id= db.Column('id',db.Unicode, primary_key=True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
  	email= db.Column('email',db.Unicode)
  	password= db.Column('password',db.Unicode) 
  	utype= db.Column('utype',db.Unicode)	
 
+<<<<<<< HEAD
  	def __init__(self,userID,email,password,utype):
 		self.userID= userID
+=======
+ 	def __init__(self,id,email,password,utype):
+		self.id= id
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.email= email
 		self.password= password
 		self.utype= utype
 
+<<<<<<< HEAD
+=======
+	def is_authenticated(self):
+			return True
+	def is_active(self):
+		return True
+	def is_anonymous(self):
+		return False
+	def get_id(self):
+		try:
+			return unicode(self.id)
+		except NameError:
+			return str(self.id)
+
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 class Driver_Location(db.Model):
  	__tablename__= 'driver_location'
  	dID= db.Column('dID',db.Unicode, primary_key=True)
