@@ -9,11 +9,13 @@
 <label for='status'> Driver Status</label>
 <button id='start'>Start</button>
 <button id='stop'>Stop</button>
-<!-- <select id="status">
-    <option value="Offline">Offline</option>
-    <option value="Availble">Available</option>
-    <option value="Busy">Busy</option>
-</select> -->
+<link rel="stylesheet" href="/static/css/driver.css"> 
+{% endblock %}
+
+{% block main %}
+<h1> Welcome </h1>
+<button id="start"> Start</button>
+<button id="stop"> Stop</button>
 
 <h3> Job History </h3>
 {{job_date}} {{job_time}}

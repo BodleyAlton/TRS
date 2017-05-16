@@ -396,6 +396,7 @@ def view_clients():
             return redirect(url_for('login'))
     # store all clients from database in this variable clientss=
     return render_template("view_clients.html")
+<<<<<<< HEAD
 @app.route("/dloc-update", methods=['POST','GET'])
 @login_required
 def dloc_update():
@@ -404,3 +405,44 @@ def dloc_update():
         lat=request.form['dlat']
         lng=request.form['dlng']
     return "success"
+=======
+<<<<<<< HEAD
+
+@app.route("/operator", methods=["GET"])
+@login_required
+def opp_main():
+    return render_template("operator_main.html")
+
+@app.route("/operates", methods=["POST","GET"])
+@login_required
+def operates():
+    opform=OperatesForm()
+    if request.method=="POST":
+        if opform.validate_on_submit():
+            #Add queries to check if plate number and trn are already in database
+            return render_template("operator_main.html")
+    return render_template('operates.html',form=opform)
+
+
+@app.route("/customer_notification", methods=["GET"])
+def customer_notification():
+    dfname= "" #received from database
+    dlname= ""
+    vcolour= ""
+    platenum= ""
+    eta_driver= ""
+    d_loc= ""
+    eta= ""
+    return render_template("customer_notif.html", dfname=dfname,dlname=dlname, vcolour=vcolour, platenum=platenum, eta_driver=eta_driver, d_loc=d_loc, eta=eta )
+
+@app.route("/driver", methods=["GET"])
+#@login_required
+def driver_main():
+    return render_template("driver_main.html")
+=======
+
+# @app.route("/operator", methods=["GET"])
+# def opp_main():
+#     return render_template("operator_main.html")
+>>>>>>> Main
+>>>>>>> frontend
