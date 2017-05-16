@@ -6,7 +6,9 @@ var lng;
 var status;
 var url= '/dloc-update'
 $(document).ready(function(){
+  w3.hide('#stop')
   $('#start').on('click',function(){
+    w3.toggleShow('#stop')
     console.log("start")
     run= setInterval(function(){
           if (navigator.geolocation) {
@@ -26,16 +28,17 @@ $(document).ready(function(){
           // }).done(function(status){
           //     console.log("DONE")
           //   })},
-            ,function() {
-            console.log("eytusbxg")});
-          }
+            ,function() {}
+            ;
         },intv);
         console.log("AFTER")
-  });
+  };
   $('#stop').on('click',function(){
+    w3.toggleShow('#start')
     console.log("Stop")
     clearInterval(run);
   });
+});
 });
 // $(document).ready(function(){
 //   checkStat();

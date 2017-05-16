@@ -65,7 +65,7 @@ def new_request():
     return render_template('map.html')
 
 @app.route("/driver/main")
-@login_required
+#@login_required
 def driver_main():
     return render_template('driver_main.html')
 
@@ -112,7 +112,7 @@ def add_client():
     return render_template('add_client.html',form=cform)
 
 @app.route('/add-driver', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_driver():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -154,7 +154,7 @@ def add_driver():
     return render_template('add_driver.html',form=dform)
 
 @app.route('/add-operator', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_operator():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -195,7 +195,7 @@ def add_operator():
     return render_template('add_operator.html',form=oform)
 
 @app.route('/add-vehicle', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_vehicle():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -359,7 +359,7 @@ def report():
     return render_template("report.html")
 
 @app.route('/view_driver', methods=["GET"])
-@login_required
+#@login_required
 def view_driver():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -372,7 +372,7 @@ def view_driver():
     return render_template("view_driver.html")
 
 @app.route('/view_vehicle', methods=["GET"])
-@login_required
+#@login_required
 def view_vehicles():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -385,7 +385,7 @@ def view_vehicles():
     return render_template("view_vehicles.html")
 
 @app.route('/view_clients', methods=["GET"])
-@login_required
+#@login_required
 def view_clients():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -442,7 +442,7 @@ def dloc_update():
         print lat
         print lng
     return success
-# @app.route("/operator", methods=["GET"])
-# def opp_main():
-#     return render_template("operator_main.html")
+# @app.route("/driverr", methods=["GET"])
+# def driver_main():
+#     return render_template("driver_main.html")
 

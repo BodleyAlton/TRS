@@ -1,3 +1,8 @@
+{% extends "base.html"%}
+{% block css%}
+  <link rel="stylesheet" href="/static/css/add.css"> 
+{% endblock %}
+
 <h1>Add Client</h1>
 {% with messages = get_flashed_messages()%}
   {%if messages%}
@@ -13,14 +18,14 @@
 
 <form method="POST" action="{{ url_for('add_client')}}">
   {{ form.csrf_token}}
-  <div>{{form.cfname.label}} {{form.cfname(size=10)}}</div>
-  <div>{{form.clname.label}} {{form.clname(size=10)}}</div>
-  <div>{{form.ccontact.label}} {{form.ccontact(size=10)}}</div>
-  <div>{{form.cemail.label}} {{form.cemail(size=10, type="email")}}</div>
-  <div>{{form.cpassword.label}} {{form.cpassword(size=10,type="password")}}</div>
-  <div>{{form.cadd1.label}} {{form.cadd1(size=20)}}</div>
-  <div>{{form.cadd2.label}} {{form.cadd2(size=20)}}</div>
-  <div>{{form.ccity.label}} {{form.ccity(size=10)}}</div>
-  <div>{{form.cparish.label}} {{form.cparish(size=10)}}</div>
+  <div class= "sf">{{form.cfname.label}} {{form.cfname(size=10)}}</div>
+  <div class= "sf">{{form.clname.label}} {{form.clname(size=10)}}</div>
+  <div class= "if">{{form.ccontact.label}} {{form.ccontact(size=10)}}</div>
+  <div class= "ef">{{form.cemail.label}} {{form.cemail(size=10, type="email")}}</div> 
+  <div class= "pf">{{form.cpassword.label}} {{form.cpassword(size=10,type="password")}}</div>
+  <div class= "sf">{{form.cadd1.label}} {{form.cadd1(size=20)}}</div>
+  <div class= "sf">{{form.cadd2.label}} {{form.cadd2(size=20)}}</div>
+  <div class= "sf">{{form.ccity.label}} {{form.ccity(size=10)}}</div>
+  <div class= "sf">{{form.cparish.label}} {{form.cparish(size=10)}}</div>
   <input type="submit" />
 </form>
