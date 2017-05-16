@@ -1,0 +1,55 @@
+body{
+     background: url("{{url_for('static', filename='img/new.png')}}") no-repeat center center fixed;
+}
+
+input[type=submit]{
+    background-color: #edbc42;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.ef{
+    font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	margin-bottom: 5px;
+	display: block;
+	padding: 4px;
+	width: 120px;
+	border: solid 1px #85b1de;
+    
+}
+
+.if{
+    font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	margin-bottom: 5px;
+	display: block;
+	padding: 4px;
+	width: 120px;
+	border: solid 1px #85b1de;
+    
+}
+
+.sf{
+    font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	margin-bottom: 5px;
+	display: block;
+	padding: 4px;
+	width: 120px;
+	border: solid 1px #85b1de;
+    
+}
+
+.pf{
+   background:#F9F9F9;
+	border: solid 1px #736357;
+}
+
+.ef:hover, .if:hover, .sf:hover, .pf:hover{
+    
+}

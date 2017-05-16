@@ -1,3 +1,8 @@
+{% extends "base.html"%}
+{% block css%}
+  <link rel="stylesheet" href="/static/css/add.css"> 
+{% endblock %}
+
 <h1>Add Operator</h1>
 {% with messages = get_flashed_messages()%}
   {%if messages%}
@@ -13,14 +18,14 @@
 
 <form method="POST" action="{{ url_for('add_operator')}}">
   {{ form.csrf_token}}
-  <div>{{form.ofname.label}} {{form.ofname(size=10)}}</div>
-  <div>{{form.olname.label}} {{form.olname(size=10)}}</div>
-  <div>{{form.oadd1.label}} {{form.oadd1(size=20)}}</div>
-  <div>{{form.oadd2.label}} {{form.oadd2(size=20)}}</div>
-  <div>{{form.ocity.label}} {{form.ocity(size=10)}}</div>
-  <div>{{form.oparish.label}} {{form.oparish(size=10)}}</div>
-  <div>{{form.otrn.label}} {{form.otrn(size=10)}}</div>
-  <div>{{form.oemail.label}} {{form.oemail(size=10)}}</div>
-  <div>{{form.opassword.label}} {{form.opassword(size=10,type="password")}}</div>
+  <div class= "sf">{{form.ofname.label}} {{form.ofname(size=10)}}</div>
+  <div class= "sf">{{form.olname.label}} {{form.olname(size=10)}}</div>
+  <div class= "sf">{{form.oadd1.label}} {{form.oadd1(size=20)}}</div>
+  <div class= "sf">{{form.oadd2.label}} {{form.oadd2(size=20)}}</div>
+  <div class= "sf">{{form.ocity.label}} {{form.ocity(size=10)}}</div>
+  <div class= "sf">{{form.oparish.label}} {{form.oparish(size=10)}}</div>
+  <div class= "if">{{form.otrn.label}} {{form.otrn(size=10)}}</div>
+  <div class= "ef">{{form.oemail.label}} {{form.oemail(size=10)}}</div>
+  <div class= "psf">{{form.opassword.label}} {{form.opassword(size=10,type="password")}}</div>
   <input type="submit" />
 </form>

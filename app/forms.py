@@ -54,3 +54,7 @@ class vehicleForm(FlaskForm):
 class LoginForm(FlaskForm):
     username= StringField('E-mail',validators=[InputRequired()])
     password= PasswordField('Password',validators=[InputRequired()])
+
+class OperatesForm(FlaskForm):
+    platenum= StringField('Vehicle Plate Number',validators=[InputRequired()])
+    dtrn= PasswordField('Driver TRN',validators=[InputRequired()])

@@ -1,15 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
 
-body{
-	margin: 0;
-	padding: 0;
-	background: #fff;
+/*body{*/
+/*	margin: 0;*/
+/*	padding: 0;*/
+/*	background: #fff;*/
 
-	color: #a18d6c;
-	font-family: Arial;
-	font-size: 12px;
-}
+/*	color: #a18d6c;*/
+/*	font-family: Arial;*/
+/*	font-size: 12px;*/
+/*}*/
 
 .body{
 	position: absolute;

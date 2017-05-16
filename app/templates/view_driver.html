@@ -1,4 +1,8 @@
- <h1> All Drivers in the Database</h1>
+{% block css%}
+  <link rel="stylesheet" href="/static/css/reports.css"> 
+{% endblock %}
+
+ <h1 class= "rphead"> All Drivers in the Database</h1>
  
 <div class= "drivers_report">
     {% for driver in driversss %}
