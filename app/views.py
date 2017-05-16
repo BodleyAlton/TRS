@@ -1,7 +1,8 @@
+import socketio
+import eventlet
 from app import app,db,login_manager
 from flask import render_template, request, redirect, url_for, jsonify,flash
 from forms import *
-# from flask_sse import sse
 from models import *
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, current_user, login_required
@@ -20,8 +21,6 @@ def getCIdValue(cid):
 def uniqueCID(cid):
     return('c' + str(cid))
 
-
-
 def getDIdValue(did):
     newId=''
     newId= did.split('d')
@@ -30,8 +29,6 @@ def getDIdValue(did):
 
 def uniqueDID(did):
     return('d' + str(did))
-
-
 
 def getOIdValue(oid):
     newId=''
@@ -47,8 +44,7 @@ def flash_errors(form):
         for error in errors:
             flash(u"Error in the %s field - %s" % (
                 getattr(form, field).label.text,
-                error
-            ))
+                error))
 @app.route('/')
 #@login_required
 def home():
@@ -64,6 +60,10 @@ def new_request():
 @app.route("/driver/main")
 #@login_required
 def driver_main():
+    if current_user.id[0] == 'o':
+            return redirect(url_for('operator_main'))
+    if current_user.id[0] == 'c':
+            return redirect(url_for('new_request'))
     return render_template('driver_main.html')
 
 @app.route("/operator/main")
@@ -93,9 +93,6 @@ def add_client():
             cadd2=cform.cadd2.data
             ccity=cform.ccity.data
             cparish=cform.cparish.data
-            client= Clientdb(specialID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
-            usertype="client"
-            cstatus="active"
             client= Clientdb(specialID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus)
             db.session.add(client)
             db.session.commit()
@@ -105,7 +102,9 @@ def add_client():
             db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
-            return redirect (url_for('home'))
+            if current_user.id[0]=='o':
+                return redirect(url_for('operator_main'))
+            return redirect (url_for('login'))
     flash_errors(cform)
     return render_template('add_client.html',form=cform)
 
@@ -142,8 +141,6 @@ def add_driver():
                 oldDID= pDID['dValue']
             specialDID=uniqueDID(oldDID)
             specDIdValue=getDIdValue(specialDID)
-            driver= Driver(specialDID,dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
-            usertype="driver"
             driver= Driverdb(specialDID,dtrn,dfname,dlname,dcontact,demail,dadd1,dadd2,dcity,dparish)
             db.session.add(driver)
             db.session.commit()
@@ -153,7 +150,7 @@ def add_driver():
             db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
-            return redirect (url_for('home'))
+            return redirect (url_for('operator_main'))
     flash_errors(dform)
     return render_template('add_driver.html',form=dform)
 
@@ -179,13 +176,11 @@ def add_operator():
             oemail=oform.oemail.data
             opassword=oform.opassword.data
             otrn=oform.otrn.data
-            usertype="operator"
             prevOID=db.engine.execute('select oValue from idValue')
             for pOID in prevOID:
                 oldOID= pOID['oValue']
             specialOID=uniqueOID(oldOID)
             specOIdValue=getOIdValue(specialOID)
-            #operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             operator= Operatordb(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             db.session.add(operator)
             db.session.commit()
@@ -195,7 +190,7 @@ def add_operator():
             db.session.add(user)
             db.session.commit()
             flash('User added sucessfully','success')
-            return redirect (url_for('home'))
+            return redirect (url_for('operator_main'))
     flash_errors(oform)
     return render_template('add_operator.html',form=oform)
 
@@ -222,7 +217,7 @@ def add_vehicle():
             db.session.add(vehicle)
             db.session.commit()
             flash('User added sucessfully','success')
-            return redirect (url_for('home'))
+            return redirect (url_for('operator_main'))
     flash_errors(vform)
     return render_template('add_vehicle.html',form=vform)
 
@@ -264,11 +259,11 @@ def logout():
 @app.route("/request", methods=["POST","GET"])
 @login_required
 def request_cab():
-    if current_user.id[0] != 'c' or  current_user.id[0] != 'o':
-        if current_user.id[0]=='d':
-            return redirect(url_for('driver_main'))
-        else:
-            return redirect(url_for('login'))
+    # if current_user.id[0] != 'c' or  current_user.id[0] != 'o':
+    #     if current_user.id[0]=='d':
+    #         return redirect(url_for('driver_main'))
+    #     else:
+    #         return redirect(url_for('login'))
     if request.method=="POST":
         seat = request.form['seat']
         vtype= request.form['vehicle']
@@ -290,10 +285,10 @@ def request_cab():
             contact = contact['ccontact']
         global creq
         creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
-
         cdist=creq.dist()
         alist=getDrivers(seat,vtype,driver,cdist)
         # print "REQUEST ROUTE"
+        print alist
         return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
@@ -429,6 +424,42 @@ def dloc_update():
         lng=request.form['dlng']
     return "success"
 
+@app.route("/chosen", methods=["POST","GET"])
+def chosen():
+    driverId=form['dID']
+    name="Spep Marley"
+    regnum="7462PP"
+    make="Toyoto"
+    model="Camery"
+    color="red"
+    loc=[123,456]
+    CDriver= Driver(name,regnum,make,model,color,loc)
+
+    return "success"
+
+@app.route("/job", methods=["POST","GET"])
+def job():
+    Client =creq
+    job= Job(creq, CDriver)
+
+    return "success"
+
+sio= socketio.Server()
+@sio.on('connect')
+def connect(sid, environ):
+    print('connect ', sid)
+
+@sio.on('my message')
+def message(sid, data):
+    print('message ', data)
+
+@sio.on('disconnect')
+def disconnect(sid):
+    print('disconnect ', sid)
+
+# if __name__ == '__main__':
+#     # wrap Flask application with socketio's middleware
+#     app = socketio.Middleware(sio, app)
 @app.route("/operator", methods=["GET"])
 @login_required
 def opp_main():
@@ -463,7 +494,6 @@ def driver_main():
 # @app.route("/operator", methods=["GET"])
 # def opp_main():
 #     return render_template("operator_main.html")
-
 
 # @app.route("/driver", methods=["GET"])
 # #@login_required
