@@ -1,5 +1,5 @@
 var run;
-var intv= 2000//15000;
+var intv= 15000;
 var dpos;
 var lat;
 var lng;
@@ -19,6 +19,17 @@ $(document).ready(function(){
               };
             console.log("current pos; lat:"+dpos.lat+" lng:"+dpos.lng);
             console.log(url)
+            $.ajax({url,
+            data:{
+              dlat: dpos.lat,
+              dlng: dpos.lng
+            },
+            method: 'POST'
+          }).done(function(status){
+              console.log(status)
+            })},function() {
+            });
+          }
           //   $.ajax({url,
           //   data:JSON.stringify({
           //     dlat: lat,
@@ -102,3 +113,4 @@ $(document).ready(function(){
 //   console.log('OFFLINE')
 //   clearInterval(run);
 // }
+

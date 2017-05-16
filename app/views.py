@@ -394,7 +394,7 @@ def view_clients():
             if current_user.id[0]=='c':
                 return redirect(url_for('new_request'))
             return redirect(url_for('login'))
-    # store all clients from database in this variable clientsss=
+    # store all clients from database in this variable clientss=
     return render_template("view_clients.html")
 
     
@@ -434,10 +434,10 @@ def customer_notification():
 @login_required
 def dloc_update():
     if request.method=='POST':
-        print "HERE"
-        # driverID=current_user.id
+        driverID=current_user.id
         lat=request.form['dlat']
         lng=request.form['dlng']
+
         # print "DRIVERID: "+str(driverID)
         print lat
         print lng
@@ -445,4 +445,5 @@ def dloc_update():
 # @app.route("/driverr", methods=["GET"])
 # def driver_main():
 #     return render_template("driver_main.html")
+#       return "success"
 
