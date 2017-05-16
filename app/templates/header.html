@@ -19,7 +19,7 @@
             <li><a href="{{ url_for('add_driver') }}">Drive</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            {% if not session.logged_in %}
+            {% if current_user.is_authenticated %}
               <li><a href="{{ url_for('login') }}">Login</a></li>
             {% else %}
               <li><a href="{{ url_for('logout') }}">Logout</a></li>

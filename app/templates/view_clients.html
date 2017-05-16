@@ -1,4 +1,8 @@
- <h1> All Clients in the Database</h1>
+{% block css%}
+  <link rel="stylesheet" href="/static/css/reports.css"> 
+{% endblock %}
+
+ <h1 class= "rphead"> All Clients in the Database</h1>
  
 <div class= "clients_report">
     {% for client1 in clientsss %}

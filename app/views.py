@@ -42,12 +42,6 @@ def getOIdValue(oid):
 def uniqueOID(oid):
     return('o' + str(oid))
 
-<<<<<<< HEAD
-=======
-# engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
-pickup=''
-dest=''
->>>>>>> 9e73187e62be015af08a826396d91677698616db
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
@@ -68,7 +62,7 @@ def new_request():
     return render_template('map.html')
 
 @app.route("/driver/main")
-@login_required
+#@login_required
 def driver_main():
     return render_template('driver_main.html')
 
@@ -99,31 +93,24 @@ def add_client():
             cadd2=cform.cadd2.data
             ccity=cform.ccity.data
             cparish=cform.cparish.data
-<<<<<<< HEAD
             client= Clientdb(specialID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
-=======
             usertype="client"
             cstatus="active"
             client= Clientdb(specialID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus)
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             db.session.add(client)
             db.session.commit()
             db.engine.execute('update idValue set cValue=' + str(specIdValue))
             db.session.commit()
-<<<<<<< HEAD
-
-=======
             user=Users(specialID,cemail,cpassword,usertype)
             db.session.add(user)
             db.session.commit()
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
     flash_errors(cform)
     return render_template('add_client.html',form=cform)
 
 @app.route('/add-driver', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_driver():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -150,34 +137,28 @@ def add_driver():
             dcity=dform.dcity.data
             dparish=dform.dparish.data
             dtrn=dform.dtrn.data
-<<<<<<< HEAD
             prevDID=db.engine.execute('select dValue from idValue')
             for pDID in prevDID:
                 oldDID= pDID['dValue']
             specialDID=uniqueDID(oldDID)
             specDIdValue=getDIdValue(specialDID)
             driver= Driver(specialDID,dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
-=======
             usertype="driver"
             driver= Driverdb(specialDID,dtrn,dfname,dlname,dcontact,demail,dadd1,dadd2,dcity,dparish)
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             db.session.add(driver)
             db.session.commit()
             db.engine.execute('update idValue set dValue=' + str(specDIdValue))
             db.session.commit()
-<<<<<<< HEAD
-=======
             user=Users(specialDID,demail,dpassword,usertype)
             db.session.add(user)
             db.session.commit()
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
     flash_errors(dform)
     return render_template('add_driver.html',form=dform)
 
 @app.route('/add-operator', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_operator():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -198,37 +179,28 @@ def add_operator():
             oemail=oform.oemail.data
             opassword=oform.opassword.data
             otrn=oform.otrn.data
-<<<<<<< HEAD
-=======
             usertype="operator"
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             prevOID=db.engine.execute('select oValue from idValue')
             for pOID in prevOID:
                 oldOID= pOID['oValue']
             specialOID=uniqueOID(oldOID)
             specOIdValue=getOIdValue(specialOID)
-<<<<<<< HEAD
-            operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
-=======
+            #operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             operator= Operatordb(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             db.session.add(operator)
             db.session.commit()
             db.engine.execute('update idValue set oValue=' + str(specOIdValue))
             db.session.commit()
-<<<<<<< HEAD
-=======
             user=Users(specialOID,oemail,opassword,usertype)
             db.session.add(user)
             db.session.commit()
->>>>>>> 9e73187e62be015af08a826396d91677698616db
             flash('User added sucessfully','success')
             return redirect (url_for('home'))
     flash_errors(oform)
     return render_template('add_operator.html',form=oform)
 
 @app.route('/add-vehicle', methods=['POST','GET'])
-@login_required
+#@login_required
 def add_vehicle():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -318,22 +290,13 @@ def request_cab():
             contact = contact['ccontact']
         global creq
         creq=Client(seat,vtype,wfactor,cid,driver,pickup,dest,fname,lname,contact)
-        # print "SEAT: "+ str(creq.seat)
-        # print "TYPE: "+ creq.vtype
-        # print "FACTOR: "+creq.wfactor
-        # print "ID: "+ str(creq.cid)
-        # print "DRIVER: "+creq.driver
-        # print "PICK UP: "+creq.pickup
-        # print "DEST:"+creq.dest
-        # print "FNAME: "+ creq.fname
-        # print "LNAME: "+ creq.lname
-        # print "CONTACT: "+ str(creq.contact)
-        # print "DIST: "+ str(creq.dist())
+
         cdist=creq.dist()
         alist=getDrivers(seat,vtype,driver,cdist)
         # print "REQUEST ROUTE"
         return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
+
 def getDrivers(seat,vtype,driver,cdist):
     drivers=[]
     pdrivers=[]
@@ -369,7 +332,6 @@ def save_coord():
     pickup=request.form['pickUpLoc']
     dest=request.form['destLoc']
     print  "PICKUP: "+pickup+", "+"DEST: "+ dest
-=======
     #drivers=  #query ID and pos
     drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
     sdrivers=sorted(drivers,key=getKey)
@@ -420,7 +382,7 @@ def report():
     return render_template("report.html")
 
 @app.route('/view_driver', methods=["GET"])
-@login_required
+#@login_required
 def view_driver():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -433,7 +395,7 @@ def view_driver():
     return render_template("view_driver.html")
 
 @app.route('/view_vehicle', methods=["GET"])
-@login_required
+#@login_required
 def view_vehicles():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -446,7 +408,7 @@ def view_vehicles():
     return render_template("view_vehicles.html")
 
 @app.route('/view_clients', methods=["GET"])
-@login_required
+#@login_required
 def view_clients():
     if current_user.id[0] != 'o':
         if current_user.id[0]=='d':
@@ -457,7 +419,7 @@ def view_clients():
             return redirect(url_for('login'))
     # store all clients from database in this variable clientss=
     return render_template("view_clients.html")
-<<<<<<< HEAD
+
 @app.route("/dloc-update", methods=['POST','GET'])
 @login_required
 def dloc_update():
@@ -466,8 +428,6 @@ def dloc_update():
         lat=request.form['dlat']
         lng=request.form['dlng']
     return "success"
-=======
-<<<<<<< HEAD
 
 @app.route("/operator", methods=["GET"])
 @login_required
@@ -500,14 +460,29 @@ def customer_notification():
 #@login_required
 def driver_main():
     return render_template("driver_main.html")
-=======
-
 # @app.route("/operator", methods=["GET"])
 # def opp_main():
 #     return render_template("operator_main.html")
-<<<<<<< HEAD
->>>>>>> Main
->>>>>>> frontend
-=======
->>>>>>> 9e73187e62be015af08a826396d91677698616db
->>>>>>> origin/datab
+
+
+# @app.route("/driver", methods=["GET"])
+# #@login_required
+# def driver_main():
+#     return render_template("driver_main.html")
+
+@app.route("/dloc-update", methods=['POST','GET'])
+@login_required
+def dloc_update():
+    if request.method=='POST':
+        driverID=current_user.id
+        lat=request.form['dlat']
+        lng=request.form['dlng']
+
+        # print "DRIVERID: "+str(driverID)
+        print lat
+        print lng
+    return success
+# @app.route("/driverr", methods=["GET"])
+# def driver_main():
+#     return render_template("driver_main.html")
+#       return "success"
