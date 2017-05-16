@@ -13,9 +13,10 @@ class Clientdb(db.Model, UserMixin):
 	ccity= db.Column('city', db.Unicode)
 	cparish= db.Column('parish', db.Unicode)
 	cstatus= db.Column('cstatus', db.Unicode)
-    
-	
+
+
 	def __init__(self,userCID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus):
+
 		self.userCID= userCID
 		self.cfname= cfname
 		self.clname= clname
@@ -53,8 +54,19 @@ class Driverdb(db.Model):
 	daddr2= db.Column('daddr2', db.Unicode)
 	dcity= db.Column('dcity', db.Unicode)
 	dparish= db.Column('dparish', db.Unicode)
+	dstatus= db.Column('dstatus', db.Unicode)
+	def getIdValue(did):
+    		newId=''
+    		newId= cid.split('d')
+    		newID=int(newId[1])
+    		return(newID)
 
-
+	def uniqueDID(did):
+    		newId=''
+    		newId= did.split('d')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('d' + str(uID))
 
 	def __init__(self,userDID,dtrn,dfname,dlname,dcontact,demail,daddr1,daddr2,dcity,dparish):
 		self.userDID=userDID
@@ -83,6 +95,18 @@ class Operatordb(db.Model):
 	oparish= db.Column('oparish', db.Unicode)
 	otrn= db.Column('otrn', db.Integer)
 
+	def getIdValue(oid):
+    		newId=''
+    		newId= cid.split('o')
+    		newID=int(newId[1])
+    		return(newID)
+
+	def uniqueID(oid):
+    		newId=''
+    		newId= oid.split('o')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('o' + str(uID))
 
 	def __init__(self,userOID,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
 		self.userOID=userOID
@@ -155,8 +179,8 @@ class Users(db.Model):
  	__tablename__= 'users'
  	id= db.Column('id',db.Unicode, primary_key=True)
  	email= db.Column('email',db.Unicode)
- 	password= db.Column('password',db.Unicode) 
- 	utype= db.Column('utype',db.Unicode)	
+ 	password= db.Column('password',db.Unicode)
+ 	utype= db.Column('utype',db.Unicode)
 
  	def __init__(self,id,email,password,utype):
 		self.id= id
@@ -180,8 +204,8 @@ class Driver_Location(db.Model):
  	__tablename__= 'driver_location'
  	dID= db.Column('dID',db.Unicode, primary_key=True)
  	lat= db.Column('lat',db.Float)
- 	longi= db.Column('longi',db.Float) 
- 	pos= db.Column('pos',db.Float)	
+ 	longi= db.Column('longi',db.Float)
+ 	pos= db.Column('pos',db.Float)
 
  	def __init__(self,userID,email,password,utype):
 		self.dID= dID
@@ -193,5 +217,5 @@ class IdValue(db.Model):
  	__tablename__= 'idvalue'
  	idV= db.Column('idV',db.Integer, primary_key=True)
  	cValue= db.Column('cValue',db.Integer)
- 	dValue= db.Column('dValue',db.Integer) 
- 	oValue= db.Column('oValue',db.Integer)	
+ 	dValue= db.Column('dValue',db.Integer)
+ 	oValue= db.Column('oValue',db.Integer)

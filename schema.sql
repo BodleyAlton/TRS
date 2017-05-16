@@ -15,8 +15,12 @@ create table client(
     cadd2 varchar(30),
 		city varchar(25),
 		parish varchar(12),
-		cstatus varchar(20),
 		primary key(userCID)
+		);
+create table driver(
+		userDID varchar(20),
+		cstatus varchar(20),
+		primary key(userDID)
 		);
 create table driver(
 		userDID varchar(20) Not Null,
@@ -109,4 +113,5 @@ create table idvalue(
 	primary key(idV)
 );
 
+insert into idvalue values(0,0,0,0);
 insert into idvalue values(1,1,1,1);
