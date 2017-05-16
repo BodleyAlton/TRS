@@ -12,10 +12,16 @@ class Clientdb(db.Model, UserMixin):
 	cadd2=db.Column('cadd2',db.Unicode)
 	ccity= db.Column('city', db.Unicode)
 	cparish= db.Column('parish', db.Unicode)
+<<<<<<< HEAD
+    
+	
+	def __init__(self,userCID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish):
+=======
 	cstatus= db.Column('cstatus', db.Unicode)
     
 	
 	def __init__(self,userCID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus):
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.userCID= userCID
 		self.cfname= cfname
 		self.clname= clname
@@ -43,7 +49,11 @@ class Clientdb(db.Model, UserMixin):
 
 class Driverdb(db.Model):
 	__tablename__ = 'driver'
+<<<<<<< HEAD
+	dID= db.Column('dID',db.Unicode, primary_key= True)
+=======
 	userDID= db.Column('userDID',db.Unicode, primary_key= True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 	dtrn= db.Column('dtrn', db.Integer, unique= True)
 	dfname= db.Column('dfname', db.Unicode)
 	dlname= db.Column('dlname', db.Unicode)
@@ -54,10 +64,29 @@ class Driverdb(db.Model):
 	dcity= db.Column('dcity', db.Unicode)
 	dparish= db.Column('dparish', db.Unicode)
 
+<<<<<<< HEAD
+	def getIdValue(did):
+    		newId=''
+    		newId= cid.split('d')
+    		newID=int(newId[1])
+    		return(newID)
+
+	def uniqueDID(did):
+    		newId=''
+    		newId= did.split('d')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('d' + str(uID))
+
+
+
+	def __init__(self,dtrn,dfname,dlname,dcontact,demail,dpassword,daddr1,daddr2,dcity,dparish):
+=======
 
 
 	def __init__(self,userDID,dtrn,dfname,dlname,dcontact,demail,daddr1,daddr2,dcity,dparish):
 		self.userDID=userDID
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.dtrn= dtrn
 		self.dfname= dfname
 		self.dlname= dlname
@@ -74,7 +103,11 @@ class Driverdb(db.Model):
 
 class Operatordb(db.Model):
 	__tablename__ = 'operator'
+<<<<<<< HEAD
+	opID= db.Column('opID', db.Unicode, primary_key=True)
+=======
 	userOID= db.Column('userOID', db.Unicode, primary_key=True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 	ofname= db.Column('ofname', db.Unicode)
 	olname= db.Column('olname', db.Unicode)
 	oadd1=db.Column('oadd1',db.Unicode)
@@ -83,9 +116,27 @@ class Operatordb(db.Model):
 	oparish= db.Column('oparish', db.Unicode)
 	otrn= db.Column('otrn', db.Integer)
 
+<<<<<<< HEAD
+	def getIdValue(oid):
+    		newId=''
+    		newId= cid.split('o')
+    		newID=int(newId[1])
+    		return(newID)
+
+	def uniqueID(oid):
+    		newId=''
+    		newId= oid.split('o')
+    		fchar= newId[0]
+    		uID=int(newId[1]) + 1
+    		return('o' + str(uID))
+
+
+	def __init__(self,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
+=======
 
 	def __init__(self,userOID,ofname,olname,oadd1,oadd2,otrn,ocity,oparish):
 		self.userOID=userOID
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.ofname= ofname
 		self.olname= olname
 		self.otrn= otrn
@@ -153,17 +204,28 @@ class Operates(db.Model):
 
 class Users(db.Model):
  	__tablename__= 'users'
+<<<<<<< HEAD
+ 	userID= db.Column('userID',db.Unicode, primary_key=True)
+=======
  	id= db.Column('id',db.Unicode, primary_key=True)
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
  	email= db.Column('email',db.Unicode)
  	password= db.Column('password',db.Unicode) 
  	utype= db.Column('utype',db.Unicode)	
 
+<<<<<<< HEAD
+ 	def __init__(self,userID,email,password,utype):
+		self.userID= userID
+=======
  	def __init__(self,id,email,password,utype):
 		self.id= id
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 		self.email= email
 		self.password= password
 		self.utype= utype
 
+<<<<<<< HEAD
+=======
 	def is_authenticated(self):
 			return True
 	def is_active(self):
@@ -176,6 +238,7 @@ class Users(db.Model):
 		except NameError:
 			return str(self.id)
 
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 class Driver_Location(db.Model):
  	__tablename__= 'driver_location'
  	dID= db.Column('dID',db.Unicode, primary_key=True)

@@ -42,9 +42,12 @@ def getOIdValue(oid):
 def uniqueOID(oid):
     return('o' + str(oid))
 
+<<<<<<< HEAD
+=======
 # engine = create_engine('mysql+pymysql://root@localhost/trs', echo=True)
 pickup=''
 dest=''
+>>>>>>> 9e73187e62be015af08a826396d91677698616db
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
@@ -96,6 +99,7 @@ def add_client():
             cadd2=cform.cadd2.data
             ccity=cform.ccity.data
             cparish=cform.cparish.data
+            client= Clientdb(specialID,cfname,clname,ccontact,cemail,cpassword,cadd1,cadd2,ccity,cparish)
             usertype="client"
             cstatus="active"
             client= Clientdb(specialID,cfname,clname,ccontact,cemail,cadd1,cadd2,ccity,cparish,cstatus)
@@ -139,6 +143,12 @@ def add_driver():
             dcity=dform.dcity.data
             dparish=dform.dparish.data
             dtrn=dform.dtrn.data
+            prevDID=db.engine.execute('select dValue from idValue')
+            for pDID in prevDID:
+                oldDID= pDID['dValue']
+            specialDID=uniqueDID(oldDID)
+            specDIdValue=getDIdValue(specialDID)
+            driver= Driver(specialDID,dfname,dlname,dcontact,demail,dpassword,dadd1,dadd2,dcity,dparish,dtrn)
             usertype="driver"
             driver= Driverdb(specialDID,dtrn,dfname,dlname,dcontact,demail,dadd1,dadd2,dcity,dparish)
             db.session.add(driver)
@@ -181,6 +191,7 @@ def add_operator():
                 oldOID= pOID['oValue']
             specialOID=uniqueOID(oldOID)
             specOIdValue=getOIdValue(specialOID)
+            #operator= Operator(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             operator= Operatordb(specialOID,ofname,olname,oadd1,oadd2,ocity,oparish,otrn)
             db.session.add(operator)
             db.session.commit()
@@ -302,6 +313,10 @@ def request_cab():
         return alist
         # return creq.dest() #consider making a global variable and pass to function responsible for p.queue
 
+
+def getDriver(seat,vtype,driver):
+    driverss=[]
+
 def getDrivers(seat,vtype,driver,cdist):
     drivers=[]
     pdrivers=[]
@@ -309,6 +324,34 @@ def getDrivers(seat,vtype,driver,cdist):
     j=0
     if driver != '':
         print driver #driver= Put query here using driver(return name,platereg,make,model and color of vchl){Zaavan}
+    #drivers=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
+    for driver in drivers:
+            driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
+    while (i < len(driverss)):
+        name=driverss[i][0]
+        regnum=driverss[i][1]
+        model=driverss[i][2]
+        make=make[i][3]
+        color=driverss[i][4]
+        loc=driverss[i][5]
+    pdriver=Driver(name,regnum,make,model,color,loc)
+    return pdriver.dest() #Consider passing to another function where the priority list will be populated.
+    fNResult= db.engine.execute('select dfname from client where status=available')
+    lNResult= db.engine.execute('select dlname from client where status=available')
+    vResult= db.engine.execute('select plateNum from operates join driver on operates.userDID=driver.userDID where status=available')
+
+    for fname in fNResult:
+            print fname['dfname']  
+    for lname in lNResult:
+        print lname['dlname']
+    for plate in vResult:
+        print plate['plateNum']
+
+@app.route('/save-coord', methods=['GET', 'POST'])
+def save_coord():
+    pickup=request.form['pickUpLoc']
+    dest=request.form['destLoc']
+    print  "PICKUP: "+pickup+", "+"DEST: "+ dest
     #drivers=  #query ID and pos
     drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
     sdrivers=sorted(drivers,key=getKey)
@@ -396,6 +439,7 @@ def view_clients():
             return redirect(url_for('login'))
     # store all clients from database in this variable clientss=
     return render_template("view_clients.html")
+
 
     
 @app.route("/operator", methods=["GET"])
