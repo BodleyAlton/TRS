@@ -16,7 +16,6 @@ $(document).ready(function(){
                 lng: position.coords.longitude
               };
             console.log("current pos; lat:"+dpos.lat+" lng:"+dpos.lng);
-            console.log(url)
             $.ajax({url,
             data:{
               dlat: dpos.lat,
@@ -29,7 +28,6 @@ $(document).ready(function(){
             });
           }
         },intv);
-        console.log("AFTER")
   });
   $('#stop').on('click',function(){
     console.log("Stop")
