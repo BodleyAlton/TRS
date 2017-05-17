@@ -274,9 +274,9 @@ def request_cab():
         pickup= request.form['pickup']
         global dest
         dest= request.form['dest']
-        fNResult= db.engine.execute("select cfname from client where userCID= %s", cid)
-        lNResult= db.engine.execute('select clname from client where userCID= %s',cid)
-        cResult= db.engine.execute('select ccontact from client where userCID= %s',cid)
+        fNResult= db.engine.execute("select cfname from client where userCID= %s" % cid)
+        lNResult= db.engine.execute('select clname from client where userCID= %s' % cid)
+        cResult= db.engine.execute('select ccontact from client where userCID= %s' % cid)
         for fname in fNResult:
             fname = fname['cfname']
         for lname in lNResult:
@@ -299,40 +299,25 @@ def getDrivers(seat,vtype,driver,cdist):
     j=0
     if driver != '':
         print driver #driver= Put query here using driver(return name,platereg,make,model and color of vchl){Zaavan}
-    #drivers=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
-    for driver in drivers:
-            driverss.append(driver.name,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
-    while (i < len(driverss)):
-        name=driverss[i][0]
-        regnum=driverss[i][1]
-        model=driverss[i][2]
-        make=make[i][3]
-        color=driverss[i][4]
-        loc=driverss[i][5]
-    pdriver=Driver(name,regnum,make,model,color,loc)
-    return pdriver.dest() #Consider passing to another function where the priority list will be populated.
-    fNResult= db.engine.execute('select dfname from client where status=available')
-    lNResult= db.engine.execute('select dlname from client where status=available')
-    vResult= db.engine.execute('select plateNum from operates join driver on operates.userDID=driver.userDID where status=available')
+        db.engine.execute("select userDID,pos, lat, longi from driver join driver_location join operates join vehicle on driver.userDID=driver_location.userDID and driver.userDID=operates.userDID and operates.plateNum=vehicle.plateNum where driver= %s" % driver)
+        drivers.append([userD['userDID'],dPos['pos'],[ dlat['lat'],dlong['longi'] ] ])
+    #driver=  #query name,loc, v.color,v.model,v.make,v.regnum where seat>seatCap,vtype=vtype
+        for driver in driver:
+            driver.append(driver.dfname,driver.dlname,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
 
-    for fname in fNResult:
-            print fname['dfname']
-    for lname in lNResult:
-        print lname['dlname']
-    for plate in vResult:
-        print plate['plateNum']
+        #return and write to DB
+    driversq=  db.engine.execute("select userDID,pos, lat, longi from driver_location join operates join vehicle on driver_location.userDID=operates.userDID and operates.plateNum=vehicle.plateNum where seat_cap= %s seat and class= %s" % seat, vtype)
+    if len(driversq)==0:
+        return str(["No Drivers Found"])
+    for driver in driversq:
+        drivers.append([userD['userDID'],dPos['pos'],[ dlat['lat'],dlong['longi'] ] ])
 
-@app.route('/save-coord', methods=['GET', 'POST'])
-def save_coord():
-    pickup=request.form['pickUpLoc']
-    dest=request.form['destLoc']
-    print  "PICKUP: "+pickup+", "+"DEST: "+ dest
-    #drivers=  #query ID and pos
-    drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
+    #drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
+
     sdrivers=sorted(drivers,key=getKey)
     print sdrivers
-    #cpos=binary_search(sdrivers, cdist, 0, len(sdrivers)-1)
-    cpos=5 #stub
+    cpos=binary_search(sdrivers, cdist, 0, len(sdrivers)-1)
+    # cpos=5 #stub
     print "CPOS"
     print cpos
     j=cpos
@@ -346,8 +331,8 @@ def save_coord():
         x+=1
     print "PDRIVERS"
     print pdrivers
-    #query for the location of each driver[i][0]
-    loc=[ [18.024583,-76.761250],[18.030585,-76.765521],[18.030801,-76.773276],[18.031141,-76.761521],[18.019688,-76.765046],[18.026336,-76.757449],[18.026572,-76.771523],[18.020625,-76.774054],[18.017870,-76.757470],[18.030816,-76.765507] ]
+
+    # loc=[ [18.024583,-76.761250],[18.030585,-76.765521],[18.030801,-76.773276],[18.031141,-76.761521],[18.019688,-76.765046],[18.026336,-76.757449],[18.026572,-76.771523],[18.020625,-76.774054],[18.017870,-76.757470],[18.030816,-76.765507] ]
     i=0
     while (i < len(pdrivers)):
         pdrivers[i].append(loc[i])
@@ -356,12 +341,6 @@ def save_coord():
     print pdrivers
     print "GET DRIVERS"
     return str(pdrivers)
-
-# @app.route('/save-coord', methods=['GET', 'POST'])
-# def save_coord():
-#     pickup=request.form['pickUpLoc']
-#     dest=request.form['destLoc']
-#     print  "PICKUP: "+pickup+", "+"DEST: "+ dest
 
 @app.route('/report', methods=["GET"])
 @login_required
@@ -422,7 +401,23 @@ def dloc_update():
         driverID=current_user.id
         lat=request.form['dlat']
         lng=request.form['dlng']
+        db.engine.execute('update lat from driver_location set lat= %s', lat)
+        db.engine.execute('update lat from driver_location set longi= %s', lng)
+        db.session.commit()
+
+        #update driver location
     return "success"
+@app.route("/suggested_drivers",methods=["POST","GET"])
+def suggested_drivers():
+    if request.method=="POST":
+        suggestedDrivers=request.form['suggDrivers']
+        for n in suggestedDrivers:
+            driId= suggestedDrivers[0]
+            driPos= suggestedDrivers[1]
+            driLat= suggestedDrivers[2][0]
+            driLong= suggestedDrivers[2][1]
+            driEta= suggestedDrivers[3]
+            db.engine.execute('insert into driver_pool values('+ driId,driPos,driLat,driLong,driEta +')') #query to write list of suggested drivers to db
 
 @app.route("/chosen", methods=["POST","GET"])
 def chosen():
@@ -444,18 +439,18 @@ def job():
 
     return "success"
 
-sio= socketio.Server()
-@sio.on('connect')
-def connect(sid, environ):
-    print('connect ', sid)
-
-@sio.on('my message')
-def message(sid, data):
-    print('message ', data)
-
-@sio.on('disconnect')
-def disconnect(sid):
-    print('disconnect ', sid)
+# sio= socketio.Server()
+# @sio.on('connect')
+# def connect(sid, environ):
+#     print('connect ', sid)
+#
+# @sio.on('my message')
+# def message(sid, data):
+#     print('message ', data)
+#
+# @sio.on('disconnect')
+# def disconnect(sid):
+#     print('disconnect ', sid)
 
 # if __name__ == '__main__':
 #     # wrap Flask application with socketio's middleware
@@ -486,33 +481,3 @@ def customer_notification():
     d_loc= ""
     eta= ""
     return render_template("customer_notif.html", dfname=dfname,dlname=dlname, vcolour=vcolour, platenum=platenum, eta_driver=eta_driver, d_loc=d_loc, eta=eta )
-
-@app.route("/driver", methods=["GET"])
-#@login_required
-def driver_main():
-    return render_template("driver_main.html")
-# @app.route("/operator", methods=["GET"])
-# def opp_main():
-#     return render_template("operator_main.html")
-
-# @app.route("/driver", methods=["GET"])
-# #@login_required
-# def driver_main():
-#     return render_template("driver_main.html")
-
-@app.route("/dloc-update", methods=['POST','GET'])
-@login_required
-def dloc_update():
-    if request.method=='POST':
-        driverID=current_user.id
-        lat=request.form['dlat']
-        lng=request.form['dlng']
-
-        # print "DRIVERID: "+str(driverID)
-        print lat
-        print lng
-    return success
-# @app.route("/driverr", methods=["GET"])
-# def driver_main():
-#     return render_template("driver_main.html")
-#       return "success"

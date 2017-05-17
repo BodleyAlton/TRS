@@ -35,6 +35,15 @@ function dist(driver,pickup,drivers,y){
         insertionSort(y);
         console.log("final")
         console.log(allDrivers)
+
+        .$ajax("/suggested_drivers",
+      data:{
+        suggDrivers: },
+        method:"POST"
+      }).done(function(status){
+        console.log(status)
+      })
+
       }
     }
   }

@@ -15,7 +15,6 @@
       <div>
       <h1> Welcome To Your 1Stop Place For All Your Taxi Service Needs</h1>
       </div>
-      <div class="mainc">
         <!-- <label id="p" for="pickup">Pick Up:</label> -->
         <div id="sl">
         <input id="pickup" class="controls" type="text" placeholder="Search Pickup Location">
@@ -26,7 +25,9 @@
         <input id="dest" name="dest" class="controls" type="text" placeholder="Where to?">
         <i class="fa fa-search w3-large " id='dsubmit' type="submit" value="search"></i>
         </div>
+
         <div id="map"></div>
+
         <div id="req_form">
           <form method='POST' action='/request'>
             <label for="seating">No. of Persons</label>
@@ -57,11 +58,9 @@
       <script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDy8tt5vdmipUlu4mdbvtoaiXgqHSC4UkI&libraries=geometry,places&region=JM&callback=createMap">
 
       </script>
-      </div>
-
     </body>
 
-      <div id="map"></div>
+      <!-- <div id="map"></div>
       <div id="req_form">
         <form method='POST' action='/request'>
           <label for="seating">No. of Persons</label>
@@ -86,13 +85,13 @@
           <input id='driverN' type="text" placeholder="DO you have a favourite driver" /> </p>
           <input type="submit" id="request" alt="Request Cab"  />
         </form>
-      </div>
-      <script type="text/javascript" src="{{url_for('static',filename='js/request.js')}}"></script>
+      </div> -->
+      <!-- <script type="text/javascript" src="{{url_for('static',filename='js/request.js')}}"></script>
       <script type="text/javascript" src= "{{url_for('static',filename='js/map.js')}}"></script>
     <script async defer
   src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDy8tt5vdmipUlu4mdbvtoaiXgqHSC4UkI&libraries=geometry,places&region=JM&callback=createMap">
-  </script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  </script> -->
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   <script type="text/javascript" charset="utf-8">
   console.log("HERE!!")
   var socket = io.connect('http://' + 'localhost' + ':' + 8080);
@@ -100,6 +99,6 @@
       socket.emit('my event', {data: 'I\'m connected!'})
       console.log("Connected!!");
   });
-  </script>
-</body>
+  </script> -->
+
 </html>
