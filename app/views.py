@@ -274,9 +274,9 @@ def request_cab():
         pickup= request.form['pickup']
         global dest
         dest= request.form['dest']
-        fNResult= db.engine.execute("select cfname from client where userCID= %s" % cid)
-        lNResult= db.engine.execute('select clname from client where userCID= %s' % cid)
-        cResult= db.engine.execute('select ccontact from client where userCID= %s' % cid)
+        fNResult= db.engine.execute("select cfname from client where userCID= \'%s\'" % cid)
+        lNResult= db.engine.execute('select clname from client where userCID= \'%s\'' % cid)
+        cResult= db.engine.execute('select ccontact from client where userCID= \'%s\'' % cid)
         for fname in fNResult:
             fname = fname['cfname']
         for lname in lNResult:
@@ -306,16 +306,18 @@ def getDrivers(seat,vtype,driver,cdist):
             driver.append(driver.dfname,driver.dlname,driver.regnum,driver.model,driver.make,driver.color, driver.loc)
 
         #return and write to DB
-    driversq=  db.engine.execute("select userDID,pos, lat, longi from driver_location join operates join vehicle on driver_location.userDID=operates.userDID and operates.plateNum=vehicle.plateNum where seat_cap= %s seat and class= %s" % seat, vtype)
-    if len(driversq)==0:
+    driversq=  db.engine.execute("select driver_location.userDID,pos, lat, longi from driver_location join operates join vehicle on driver_location.userDID=operates.userDID and operates.plateNum=vehicle.plateNum where seat_cap= %s and class= \'%s\'" % (seat, vtype))
+    if driversq== None:
         return str(["No Drivers Found"])
     for driver in driversq:
-        drivers.append([userD['userDID'],dPos['pos'],[ dlat['lat'],dlong['longi'] ] ])
+        drivers.append([driver['userDID'],driver['pos'],[ driver['lat'],driver['longi'] ] ])
 
     #drivers=[[123,6],[456,10],[789,7.5],[3412,7],[345,7.67],[678,1],[901,4],[234,5],[567,3],[890,2],[4794,15],[54536,11],[5773,14],[47789,12],[7540,13]] #List produced by database query
 
     sdrivers=sorted(drivers,key=getKey)
     print sdrivers
+    if len(sdrivers) < 2:
+        pdrivers=sdrivers
     cpos=binary_search(sdrivers, cdist, 0, len(sdrivers)-1)
     # cpos=5 #stub
     print "CPOS"
@@ -333,11 +335,11 @@ def getDrivers(seat,vtype,driver,cdist):
     print pdrivers
 
     # loc=[ [18.024583,-76.761250],[18.030585,-76.765521],[18.030801,-76.773276],[18.031141,-76.761521],[18.019688,-76.765046],[18.026336,-76.757449],[18.026572,-76.771523],[18.020625,-76.774054],[18.017870,-76.757470],[18.030816,-76.765507] ]
-    i=0
-    while (i < len(pdrivers)):
-        pdrivers[i].append(loc[i])
-        i+=1
-    print "loc"
+    # i=0
+    # while (i < len(pdrivers)):
+    #     pdrivers[i].append(loc[i])
+    #     i+=1
+    # print "loc"
     print pdrivers
     print "GET DRIVERS"
     return str(pdrivers)

@@ -1,12 +1,16 @@
 var duration;
 var allDrivers;
+url= '/suggested_drivers';
+
+var df=$.Deferred()
 
 function pdrivers(driver,pickup){
   allDrivers=driver
   console.log("Here")
   for(y=0; y < driver.length; y++){
     drivers=driver[y][2][0]+","+driver[y][2][1];
-    dist(drivers,pickup,driver,y);
+
+    dist(drivers,pickup,driver,y)
   }
 }
 
@@ -35,20 +39,14 @@ function dist(driver,pickup,drivers,y){
         insertionSort(y);
         console.log("final")
         console.log(allDrivers)
-
-        .$ajax("/suggested_drivers",
-      data:{
-        suggDrivers: },
-        method:"POST"
-      }).done(function(status){
-        console.log(status)
-      })
-
-      }
+        df.resolve()
+        }
     }
   }
   });
 }
+
+
 function insertionSort(y){
   for(x = 0; x < allDrivers.length; x++){
     if (allDrivers[x][3] != 'undifined'){
@@ -60,3 +58,17 @@ function insertionSort(y){
     }
   }
 }
+  df.done (function(){
+    url= '/suggested_drivers';
+      console.log("AJAX")
+      console.log(allDrivers[0][1])
+      console.log("AJA")
+
+  $.ajax({ url,
+        data:{
+        suggDrivers: allDrivers[0][1] },
+        method:"POST"
+      }).done(function(status){
+        console.log(status)
+      })
+  })
